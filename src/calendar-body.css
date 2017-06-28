@@ -1,0 +1,47 @@
+.mat-calendar-body {
+	min-width: 224px;
+}
+
+.mat-calendar-body-label {
+	padding: 7.14286% 0 7.14286% 7.14286%;
+	height: 0;
+	line-height: 0;
+	transform: translateX(-6px);
+	text-align: left;
+}
+
+.mat-calendar-body-cell {
+	position: relative;
+	width: 14.28571%;
+	height: 0;
+	line-height: 0;
+	padding: 7.14286% 0;
+	text-align: center;
+	outline: none;
+	cursor: pointer;
+}
+
+.mat-calendar-body-disabled {
+	cursor: default;
+}
+
+.mat-calendar-body-cell-content {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 90%;
+	height: 90%;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 50%;
+}
+
+[dir='rtl'] .mat-calendar-body-label {
+	padding: 0 7.14286% 0 0;
+	transform: translateX(6px);
+	text-align: right;
+}

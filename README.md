@@ -31,7 +31,7 @@ Add dependency
 import { MdDatetimepickerModule } from 'md-datetimepicker';
 ```
 
-Also, make sure your root module has the these modules imported:
+The following modules are required:
 
 ```
 import { BrowserModule } from '@angular/platform-browser';

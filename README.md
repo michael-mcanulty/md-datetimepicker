@@ -1,4 +1,4 @@
-# md-datetimepicker
+# MdDatetimepicker
 A datetime picker for Angular Material2.
 
 
@@ -14,7 +14,7 @@ A datetime picker for Angular Material2.
 
 Download
 
-- Download the typescript files from GitHub in the src folder. Create a folder in your app root called datetimepicker.
+- Download the Typescript files from GitHub in the src folder. Create a folder in your app root called datetimepicker.
 
 Or
 

@@ -54,7 +54,7 @@ import 'hammerjs';
     <input mdInput [MdDatetimepicker]="picker" hide-time="false" hour="20" minutes="0" placeholder="Choose a date">
 		    <button mdSuffix [mdDatetimepickerToggle]="picker"></button>
 </md-input-container>
-<md-datetimepicker #picker></md-datetimepicker>
+<md-datetimepicker #picker [startAt]="startDate"></md-datetimepicker>
 ```
 
 <h1>Input Attributes</h1>

@@ -57,9 +57,9 @@ import 'hammerjs';
 <md-datetimepicker #picker></md-datetimepicker>
 ```
 
-<h1>Features</h1>
+<h1>Input Attributes</h1>
 
-The three attributes provided are optional, you can omit entirely.
+The three following attributes on the <bold>input</bold> element only are optional; you can omit entirely.
 
 - Hide-time
 
@@ -67,6 +67,14 @@ The three attributes provided are optional, you can omit entirely.
 
 - Default Minutes
 
+- min (date)
+
+- max (date)
+
+
+<h1>Datetimepicker Attributes</h1>
+
+- startAt - This is the date to show when the calendar opens.
 
 <h1>Demo</h1>
 Here is a working <a href="http://components.mikemcanulty.com/">demo</a>

@@ -2,7 +2,7 @@
   <tr><th class="mat-calendar-table-header-divider" colspan="7" aria-hidden="true"></th></tr>
 </table>
 <div class="mat-time-container">
-  <div class="mat-time-button-wrapper">
+  <div class="mat-time-button-wrapper" (swipeup)="_increaseHoursClicked()" (swipedown)="_decreaseHoursClicked()">
     <div class="mat-time-button">
       <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button"
             (click)="_increaseHoursClicked()"
@@ -35,7 +35,7 @@
     </div>
     <div class="mat-button-spacer-wrapper"></div>
   </div>
-  <div class="mat-time-button-wrapper time-minutes">
+  <div class="mat-time-button-wrapper time-minutes"  (swipeup)="_increaseMinutesClicked()" (swipedown)="_decreaseMinutesClicked()">
     <div class="mat-time-button">
       <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button"
             (click)="_increaseMinutesClicked()"

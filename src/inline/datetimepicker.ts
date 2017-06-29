@@ -44,8 +44,8 @@ let datetimepickerUid = 0;
  */
 @Component({
   selector: 'md-datetimepicker-content',
-  templateUrl: 'datetimepicker-content.html',
-  styleUrls: ['datetimepicker-content.css'],
+  template: `<md-calendar cdkTrapFocus [id]="datetimepicker.id" [startAt]="datetimepicker.startAt" [startView]="datetimepicker.startView" [minDate]="datetimepicker._minDate" [maxDate]="datetimepicker._maxDate" [dateFilter]="datetimepicker._dateFilter" [selected]="datetimepicker._selected" (selectedChange)="datetimepicker._selectAndClose($event)" (closeDialog)="datetimepicker.close()" [timepickerAttrs]="datetimepicker.timepickerAttrs" ></md-calendar>`,
+  styles: [`.mat-datepicker-content{box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);display: block;}.mat-calendar{width: 296px;}.mat-datepicker-content-touch{display: block;max-height: 80vh;overflow: auto;margin: -24px;}.mat-datepicker-content-touch .mat-calendar{width: 64vmin;height: 80vmin;min-width: 250px;min-height: 312px;max-width: 750px;max-height: 788px;}@media (min-width: 100VW){.mat-datepicker-content-touch{box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);}}`],
   host: {
     'class': 'mat-datepicker-content',
     '[class.mat-datetimepicker-content-touch]': 'datetimepicker.touchUi',

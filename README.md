@@ -3,7 +3,7 @@ A datetime picker for Angular Material2.
 
 
 <h1>Requirements</h1>
-
+- hammerjs
 - @angular/material
 - @angular/animations
 - rxjs/Subscription
@@ -37,13 +37,14 @@ The following modules are required:
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import 'hammerjs';
 
  imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
     MdDatetimepickerModule
-    ...
+   ]
 ```
 
 <h1>Usage</h1>

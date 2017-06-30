@@ -1,3 +1,4 @@
+
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -29,7 +30,6 @@ import {Subscription} from 'rxjs/Subscription';
 import {DateAdapter} from './native-date-module/index';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {MdCalendar} from './calendar';
-import {TimepickerAttrs} from './timepicker-attrs';
 import 'rxjs/add/operator/first';
 
 /** Used to generate a unique ID for each datetimepicker instance. */
@@ -44,7 +44,7 @@ let datetimepickerUid = 0;
  */
 @Component({
   selector: 'md-datetimepicker-content',
-  template: `<md-calendar cdkTrapFocus [id]="datetimepicker.id" [startAt]="datetimepicker.startAt" [startView]="datetimepicker.startView" [minDate]="datetimepicker._minDate" [maxDate]="datetimepicker._maxDate" [dateFilter]="datetimepicker._dateFilter" [selected]="datetimepicker._selected" (selectedChange)="datetimepicker._selectAndClose($event)" (closeDialog)="datetimepicker.close()" [timepickerAttrs]="datetimepicker.timepickerAttrs" ></md-calendar>`,
+  template: `<md-calendar cdkTrapFocus [id]="datetimepicker.id" [startView]="datetimepicker.startView" [minDate]="datetimepicker._minDate" [maxDate]="datetimepicker._maxDate" [dateFilter]="datetimepicker._dateFilter" [selected]="datetimepicker._selected" (selectedChange)="datetimepicker._selectAndClose($event)" (closeDialog)="datetimepicker.close()" [hideTime]="datetimepicker.hideTime" [date]="datetimepicker.date" ></md-calendar>`,
   styles: [`.mat-datepicker-content{box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);display: block;}.mat-calendar{width: 296px;}.mat-datepicker-content-touch{display: block;max-height: 80vh;overflow: auto;margin: -24px;}.mat-datepicker-content-touch .mat-calendar{width: 64vmin;height: 80vmin;min-width: 250px;min-height: 312px;max-width: 750px;max-height: 788px;}@media (min-width: 100VW){.mat-datepicker-content-touch{box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);}}`],
   host: {
     'class': 'mat-datepicker-content',
@@ -85,16 +85,6 @@ export class MdDatetimepickerContent<D> implements AfterContentInit {
 })
 export class MdDatetimepicker<D> implements OnDestroy {
 
-  /** The date to open the calendar to initially. */
-  @Input()
-  get startAt(): D {
-    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
-    // selected value is.
-    return this._startAt || (this._datetimepickerInput ? this._datetimepickerInput.value : null);
-  }
-  set startAt(date: D) { this._startAt = date; }
-  private _startAt: D;
-
   /** The view that the calendar should start in. */
   @Input() startView: 'month' | 'year' = 'month';
 
@@ -102,6 +92,26 @@ export class MdDatetimepicker<D> implements OnDestroy {
    * Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather
    * than a popup and elements have more padding to allow for bigger touch targets.
    */
+    /** Set as datepicker only; No timepicker*/
+  @Input()
+  get date():D{
+    return this._date;
+  }
+  set date(value:D){
+    this._date = value;
+  }
+  private _date:D;
+
+
+  /** Set as datepicker only; No timepicker*/
+  @Input()
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
 
   /** Sets to dialog to popup. Dialog req on small screen */
   @Input()
@@ -136,17 +146,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
   get _dateFilter(): (date: D | null) => boolean {
     return this._datetimepickerInput && this._datetimepickerInput._dateFilter;
   }
-  private _timepickerAttrs:TimepickerAttrs;
   
-  get timepickerAttrs():TimepickerAttrs{
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v:TimepickerAttrs){
-    if(v){
-      this._timepickerAttrs = v;
-    }
-  }
-
   /** A reference to the overlay when the calendar is opened as a popup. */
   private _popupRef: OverlayRef;
 
@@ -171,7 +171,6 @@ export class MdDatetimepicker<D> implements OnDestroy {
     @Optional() private _dateAdapter: DateAdapter<D>,
     @Optional() private _dir: Dir,
     @Optional() @Inject(DOCUMENT) private _document: any) {
-
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
@@ -206,6 +205,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
     }
 
     this._datetimepickerInput = input;
+
     this._inputSubscription = this._datetimepickerInput._valueChange.subscribe((value: D) => {this._selected = value; });
   }
 
@@ -220,7 +220,8 @@ export class MdDatetimepicker<D> implements OnDestroy {
     if (this._document) {
       this._focusedElementBeforeOpen = this._document.activeElement;
     }
-    this.timepickerAttrs = this._datetimepickerInput.timeViewAttrs;
+    this._datetimepickerInput.hideTime = this.hideTime;
+    this.date = this._datetimepickerInput.date;
     this.touchUi ? this._openAsDialog() : this._openAsPopup();
     this.opened = true;
   }

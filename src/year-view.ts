@@ -20,7 +20,6 @@ import {
 } from '@angular/core';
 import {MdCalendarCell} from './calendar-body';
 import {MdCalendar} from './calendar';
-import { TimepickerAttrs} from './timepicker-attrs';
 import {DateAdapter} from './native-date-module/index';
 import {MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
 import {createMissingDateImplError} from './datetimepicker-errors';
@@ -72,15 +71,6 @@ export class MdYearView<D> implements AfterContentInit {
   /** The month in this year that today falls on. Null if today is in a different year. */
   _todayMonth: number;
 
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    this._timepickerAttrs = v;
-  }
-  private _timepickerAttrs: TimepickerAttrs;
-
   /**
    * The month in this year that the selected Date falls on.
    * Null if the selected Date is in a different year.
@@ -96,7 +86,7 @@ export class MdYearView<D> implements AfterContentInit {
       throw createMissingDateImplError('MD_DATE_FORMATS');
     }
 
-    this._activeDate = this._dateAdapter.today();
+    this._activeDate = this._calendar.date || this._dateAdapter.today();
   }
 
   ngAfterContentInit() {
@@ -105,8 +95,8 @@ export class MdYearView<D> implements AfterContentInit {
 
   /** Handles when a new month is selected. */
   _monthSelected(month: number) {
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     this.selectedChange.emit(this._dateAdapter.createDate(
         this._dateAdapter.getYear(this.activeDate), month,
         this._dateAdapter.getDate(this.activeDate), defaultHours, defaultMinutes));
@@ -114,7 +104,6 @@ export class MdYearView<D> implements AfterContentInit {
 
   /** Initializes this month view. */
   private _init() {
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
     this._selectedMonth = this._getMonthInCurrentYear(this.selected);
     this._todayMonth = this._getMonthInCurrentYear(this._dateAdapter.today());
     this._yearLabel = this._dateAdapter.getYearName(this.activeDate);
@@ -136,8 +125,8 @@ export class MdYearView<D> implements AfterContentInit {
 
   /** Creates an MdCalendarCell for the given month. */
   private _createCellForMonth(month: number, monthName: string) {
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     let ariaLabel = this._dateAdapter.format(
         this._dateAdapter.createDate(this._dateAdapter.getYear(this.activeDate), month, 1 ,defaultHours, defaultMinutes),
         this._dateFormats.display.monthYearA11yLabel);
@@ -150,8 +139,8 @@ export class MdYearView<D> implements AfterContentInit {
     if (!this.dateFilter){
       return true;
     }
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     let firstOfMonth = this._dateAdapter.createDate(
         this._dateAdapter.getYear(this.activeDate), month, 1, defaultHours, defaultMinutes);
 

@@ -29,7 +29,6 @@ import {Subscription} from 'rxjs/Subscription';
 import {DateAdapter} from './native-date-module/index';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {MdCalendar} from './calendar';
-import {TimepickerAttrs} from './timepicker-attrs';
 import 'rxjs/add/operator/first';
 
 /** Used to generate a unique ID for each datetimepicker instance. */
@@ -85,16 +84,6 @@ export class MdDatetimepickerContent<D> implements AfterContentInit {
 })
 export class MdDatetimepicker<D> implements OnDestroy {
 
-  /** The date to open the calendar to initially. */
-  @Input()
-  get startAt(): D {
-    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
-    // selected value is.
-    return this._startAt || (this._datetimepickerInput ? this._datetimepickerInput.value : null);
-  }
-  set startAt(date: D) { this._startAt = date; }
-  private _startAt: D;
-
   /** The view that the calendar should start in. */
   @Input() startView: 'month' | 'year' = 'month';
 
@@ -102,6 +91,26 @@ export class MdDatetimepicker<D> implements OnDestroy {
    * Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather
    * than a popup and elements have more padding to allow for bigger touch targets.
    */
+    /** Set as datepicker only; No timepicker*/
+  @Input()
+  get date():D{
+    return this._date;
+  }
+  set date(value:D){
+    this._date = value;
+  }
+  private _date:D;
+
+
+  /** Set as datepicker only; No timepicker*/
+  @Input()
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
 
   /** Sets to dialog to popup. Dialog req on small screen */
   @Input()
@@ -136,17 +145,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
   get _dateFilter(): (date: D | null) => boolean {
     return this._datetimepickerInput && this._datetimepickerInput._dateFilter;
   }
-  private _timepickerAttrs:TimepickerAttrs;
   
-  get timepickerAttrs():TimepickerAttrs{
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v:TimepickerAttrs){
-    if(v){
-      this._timepickerAttrs = v;
-    }
-  }
-
   /** A reference to the overlay when the calendar is opened as a popup. */
   private _popupRef: OverlayRef;
 
@@ -171,7 +170,6 @@ export class MdDatetimepicker<D> implements OnDestroy {
     @Optional() private _dateAdapter: DateAdapter<D>,
     @Optional() private _dir: Dir,
     @Optional() @Inject(DOCUMENT) private _document: any) {
-
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
@@ -206,6 +204,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
     }
 
     this._datetimepickerInput = input;
+
     this._inputSubscription = this._datetimepickerInput._valueChange.subscribe((value: D) => {this._selected = value; });
   }
 
@@ -220,7 +219,8 @@ export class MdDatetimepicker<D> implements OnDestroy {
     if (this._document) {
       this._focusedElementBeforeOpen = this._document.activeElement;
     }
-    this.timepickerAttrs = this._datetimepickerInput.timeViewAttrs;
+    this._datetimepickerInput.hideTime = this.hideTime;
+    this.date = this._datetimepickerInput.date;
     this.touchUi ? this._openAsDialog() : this._openAsPopup();
     this.opened = true;
   }

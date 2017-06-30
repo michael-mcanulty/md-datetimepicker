@@ -36,7 +36,6 @@ import {
 }
 from '@angular/material';
 import {MdDatetimepickerIntl} from './datetimepicker-intl';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {DateAdapter} from './native-date-module/index';
 
@@ -44,11 +43,11 @@ import {DateAdapter} from './native-date-module/index';
  * A calendar that is used as part of the datetimepicker.
  * @docs-private
  */
- 
+
 @Component({
   selector: 'md-calendar',
-  template: `<div class="mat-calendar-header"> <div class="mat-calendar-controls"><button *ngIf="!_isCompatibilityMode" md-button class="mat-calendar-period-button" (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">{{_periodButtonText}}<div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div></button> <button *ngIf="_isCompatibilityMode" mat-button class="mat-calendar-period-button" (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">{{_periodButtonText}}<div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div></button> <div class="mat-calendar-spacer"></div><button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-previous-button" [disabled]="!_previousEnabled()" (click)="_previousClicked()" [attr.aria-label]="_prevButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-previous-button" [disabled]="!_previousEnabled()" (click)="_previousClicked()" [attr.aria-label]="_prevButtonLabel"> </button> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-next-button" [disabled]="!_nextEnabled()" (click)="_nextClicked()" [attr.aria-label]="_nextButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-next-button" [disabled]="!_nextEnabled()" (click)="_nextClicked()" [attr.aria-label]="_nextButtonLabel"> </button> </div></div><div class="mat-calendar-content" (keydown)="_handleCalendarBodyKeydown($event)" (swipeleft)="_previousClicked()" (swiperight)="_nextClicked()" [ngSwitch]="_monthView" cdkMonitorSubtreeFocus> <md-month-view *ngSwitchCase="true" [activeDate]="_activeDate" [timepickerAttrs]="timepickerAttrs" [selected]="selected" [dateFilter]="_dateFilterForViews" (selectedChange)="_dateSelected($event)"> </md-month-view> <md-year-view *ngSwitchDefault [activeDate]="_activeDate" [selected]="selected" [timepickerAttrs]="timepickerAttrs" [dateFilter]="_dateFilterForViews" (selectedChange)="_monthSelected($event)"> </md-year-view> <md-time-view *ngIf="!timepickerAttrs.hideTime" [selected]="selected" [timepickerAttrs]="timepickerAttrs" (selectedChange)="_timeSelected($event)"> </md-time-view> </div><div class="mat-calendar-footer"> <button md-button (click)="_closeDialog()">Cancel</button> <button md-button [disabled]="!selected" (click)="_dateComplete()">Submit</button></div>`,
-   styles: [`.mat-calendar{display: block;}.mat-calendar-header{padding: 8px 8px 0 8px;}.mat-calendar-content{padding: 0 8px 0 8px;outline: none;}.mat-calendar-controls{display: flex;padding: 5% calc(100% / 14 - 22px) 5% calc(100% / 14 - 22px);}.mat-calendar-spacer{flex: 1 1 auto;}.mat-calendar-period-button{min-width: 0;}.mat-calendar-arrow{display: inline-block;width: 0;height: 0;border-left: 5px solid transparent;border-right: 5px solid transparent;border-top-width: 5px;border-top-style: solid;margin: 0 0 0 5px;vertical-align: middle;}.mat-calendar-arrow.mat-calendar-invert{transform: rotate(180deg);}[dir='rtl'] .mat-calendar-arrow{margin: 0 5px 0 0;}.mat-calendar-down-button,.mat-calendar-up-button,.mat-calendar-previous-button,.mat-calendar-next-button{position: relative;}.mat-calendar-down-button::after, .mat-calendar-up-button::after, .mat-calendar-previous-button::after, .mat-calendar-next-button::after{content: '';position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: 15.5px;border: 0 solid currentColor;border-top-width: 2px;}[dir='rtl'] .mat-calendar-down-button, [dir='rtl'] .mat-calendar-up-button, [dir='rtl'] .mat-calendar-previous-button, [dir='rtl'] .mat-calendar-next-button{transform: rotate(180deg);}.mat-calendar-previous-button::after{border-left-width: 2px;transform: translateX(2px) rotate(-45deg);}.mat-calendar-next-button::after{border-right-width: 2px;transform: translateX(-2px) rotate(45deg);}.mat-calendar-up-button::after{border-right-width: 2px;transform: translateX(1px) translateY(2px) rotate(315deg);}.mat-calendar-down-button::after{border-right-width: 2px;transform: translateX(1px) rotate(135deg);}.mat-calendar-table{border-spacing: 0;border-collapse: collapse;width: 100%;}.mat-calendar-table-header th{text-align: center;padding: 0 0 8px 0;}.mat-calendar-table-header-divider{position: relative;height: 1px;}.mat-calendar-table-header-divider::after{content: '';position: absolute;top: 0;left: -8px;right: -8px;height: 1px;}.mat-calendar-footer{display: flex;flex-direction: row;justify-content: flex-end;padding: 10px;}.mat-time-container{display: flex;justify-content: flex-end;align-items: center;margin: 0 10px;}.mat-time-button-wrapper{display: flex;flex-direction: column;flex-grow: 0;}.mat-time-button{width: 40px;height: 40px;}.mat-time-spacer-wrapper{display: flex;flex-direction: column;flex-grow: 0;width: 25px;}.mat-time-display{text-align: center;font-family: Roboto,"Helvetica Neue",sans-serif;width: 40px;height: 27px;color: rgba(0, 0, 0, 0.84);font-size: 14px;font-weight: 500;display: flex;justify-content: center;}.mat-time-colon{text-align: center;font-size: 16px;}.mat-time-colon-wrapper{width: 25px;height: 30px;display: flex;justify-content: center;}.mat-time-spacer{width: 25px;height: 40px;}.mat-button-spacer-wrapper{width: 25px;height: 40px;}.mat-display-spacer-wrapper{width: 25px;height: 40px;}#md-datepicker-0 > div.mat-calendar-content > md-month-view > table{margin-bottom: 8px;}.mat-time-input{text-align: center;border: none;width: 18px;outline: none;}.mat-time-ampm{min-width: 48px !important;line-height: 25px !important;}.time-minutes{margin-right: 10px;}md-dialog-container{padding:0 !important;}.mat-dialog-container{max-width: 100vw !important;}`],
+  template: `<div class="mat-calendar-header"> <div class="mat-calendar-controls"><button *ngIf="!_isCompatibilityMode" md-button class="mat-calendar-period-button" (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">{{_periodButtonText}}<div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div></button> <button *ngIf="_isCompatibilityMode" mat-button class="mat-calendar-period-button" (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">{{_periodButtonText}}<div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div></button> <div class="mat-calendar-spacer"></div><button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-previous-button" [disabled]="!_previousEnabled()" (click)="_previousClicked()" [attr.aria-label]="_prevButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-previous-button" [disabled]="!_previousEnabled()" (click)="_previousClicked()" [attr.aria-label]="_prevButtonLabel"> </button> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-next-button" [disabled]="!_nextEnabled()" (click)="_nextClicked()" [attr.aria-label]="_nextButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-next-button" [disabled]="!_nextEnabled()" (click)="_nextClicked()" [attr.aria-label]="_nextButtonLabel"> </button> </div></div><div class="mat-calendar-content" (keydown)="_handleCalendarBodyKeydown($event)" (swipeleft)="_previousClicked()" (swiperight)="_nextClicked()" [ngSwitch]="_monthView" cdkMonitorSubtreeFocus> <md-month-view *ngSwitchCase="true" [activeDate]="_activeDate" [selected]="selected" [dateFilter]="_dateFilterForViews" (selectedChange)="_dateSelected($event)"> </md-month-view> <md-year-view *ngSwitchDefault [activeDate]="_activeDate" [selected]="selected" [dateFilter]="_dateFilterForViews" (selectedChange)="_monthSelected($event)"> </md-year-view> <md-time-view *ngIf="!hideTime" [selected]="selected" (selectedChange)="_timeSelected($event)"> </md-time-view> </div><div class="mat-calendar-footer"> <button md-button (click)="_closeDialog()">Cancel</button> <button md-button [disabled]="!selected" (click)="_dateComplete()">Submit</button></div>`,
+  styles: [`.mat-calendar{display: block;}.mat-calendar-header{padding: 8px 8px 0 8px;}.mat-calendar-content{padding: 0 8px 0 8px;outline: none;}.mat-calendar-controls{display: flex;padding: 5% calc(100% / 14 - 22px) 5% calc(100% / 14 - 22px);}.mat-calendar-spacer{flex: 1 1 auto;}.mat-calendar-period-button{min-width: 0;}.mat-calendar-arrow{display: inline-block;width: 0;height: 0;border-left: 5px solid transparent;border-right: 5px solid transparent;border-top-width: 5px;border-top-style: solid;margin: 0 0 0 5px;vertical-align: middle;}.mat-calendar-arrow.mat-calendar-invert{transform: rotate(180deg);}[dir='rtl'] .mat-calendar-arrow{margin: 0 5px 0 0;}.mat-calendar-down-button,.mat-calendar-up-button,.mat-calendar-previous-button,.mat-calendar-next-button{position: relative;}.mat-calendar-down-button::after, .mat-calendar-up-button::after, .mat-calendar-previous-button::after, .mat-calendar-next-button::after{content: '';position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: 15.5px;border: 0 solid currentColor;border-top-width: 2px;}[dir='rtl'] .mat-calendar-down-button, [dir='rtl'] .mat-calendar-up-button, [dir='rtl'] .mat-calendar-previous-button, [dir='rtl'] .mat-calendar-next-button{transform: rotate(180deg);}.mat-calendar-previous-button::after{border-left-width: 2px;transform: translateX(2px) rotate(-45deg);}.mat-calendar-next-button::after{border-right-width: 2px;transform: translateX(-2px) rotate(45deg);}.mat-calendar-up-button::after{border-right-width: 2px;transform: translateX(1px) translateY(2px) rotate(315deg);}.mat-calendar-down-button::after{border-right-width: 2px;transform: translateX(1px) rotate(135deg);}.mat-calendar-table{border-spacing: 0;border-collapse: collapse;width: 100%;}.mat-calendar-table-header th{text-align: center;padding: 0 0 8px 0;}.mat-calendar-table-header-divider{position: relative;height: 1px;}.mat-calendar-table-header-divider::after{content: '';position: absolute;top: 0;left: -8px;right: -8px;height: 1px;}.mat-calendar-footer{display: flex;flex-direction: row;justify-content: flex-end;padding: 10px;}.mat-time-container{display: flex;justify-content: flex-end;align-items: center;margin: 0 10px;}.mat-time-button-wrapper{display: flex;flex-direction: column;flex-grow: 0;}.mat-time-button{width: 40px;height: 40px;}.mat-time-spacer-wrapper{display: flex;flex-direction: column;flex-grow: 0;width: 25px;}.mat-time-display{text-align: center;font-family: Roboto,"Helvetica Neue",sans-serif;width: 40px;height: 27px;color: rgba(0, 0, 0, 0.84);font-size: 14px;font-weight: 500;display: flex;justify-content: center;}.mat-time-colon{text-align: center;font-size: 16px;}.mat-time-colon-wrapper{width: 25px;height: 30px;display: flex;justify-content: center;}.mat-time-spacer{width: 25px;height: 40px;}.mat-button-spacer-wrapper{width: 25px;height: 40px;}.mat-display-spacer-wrapper{width: 25px;height: 40px;}#md-datepicker-0 > div.mat-calendar-content > md-month-view > table{margin-bottom: 8px;}.mat-time-input{text-align: center;border: none;width: 18px;outline: none;}.mat-time-ampm{min-width: 48px !important;line-height: 25px !important;}.time-minutes{margin-right: 10px;}md-dialog-container{padding:0 !important;}.mat-dialog-container{max-width: 100vw !important;}`],
   host: {
     'class': 'mat-calendar',
   },
@@ -56,10 +55,6 @@ import {DateAdapter} from './native-date-module/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MdCalendar<D> implements AfterContentInit {
-
-  @Output() pickerAttrs:EventEmitter<TimepickerAttrs> = new EventEmitter<TimepickerAttrs>();
-  /** A date representing the period (month or year) to start the calendar in. */
-  @Input() startAt: D;
 
   /** Whether the calendar should be started in month or year view. */
   @Input() startView: 'month' | 'year' = 'month';
@@ -75,18 +70,6 @@ export class MdCalendar<D> implements AfterContentInit {
 
   /** A function used to filter which dates are selectable. */
   @Input() dateFilter: (date: D) => boolean;
-
-  /** Show or hide the time view */
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    this._timepickerAttrs = v;
-    this.pickerAttrs.emit(v);
-  }
-  private _timepickerAttrs: TimepickerAttrs;
-
 
   /** Date filter for the month and year views. */
   _dateFilterForViews = (date: D) => {
@@ -106,8 +89,30 @@ export class MdCalendar<D> implements AfterContentInit {
   }
   private _clampedActiveDate: D;
 
+ /** Set as datepicker only; No timepicker*/
+  @Input()
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
+  
   /** Whether the calendar is in month view. */
   _monthView: boolean;
+
+ /** The date to open the calendar to initially. */
+  @Input()
+  get date(): D {
+    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
+    // selected value is.
+    return this._date;
+  }
+  set date(date: D) {
+    this._date = date;
+  }
+  private _date: D;
 
   /** The label for the current calendar view. */
   get _periodButtonText(): string {
@@ -172,13 +177,11 @@ export class MdCalendar<D> implements AfterContentInit {
 
   ngAfterContentInit() {
     let  today = new Date();
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this._activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this._activeDate);
-    this._activeDate = this.startAt || this._dateAdapter.createDate(today.getFullYear(), today.getMonth(), today.getDate(), defaultHours, defaultMinutes );
+    this._activeDate = this.date || this._dateAdapter.today();
     this._focusActiveCell();
     this._monthView = this.startView != 'year';
     this._dateSelected(this._activeDate);
-     this.selected = this._activeDate;
+    this.selected = this._activeDate;
   }
 
   /** Handles month selection in the year view. */
@@ -190,7 +193,6 @@ export class MdCalendar<D> implements AfterContentInit {
   /** Handles user clicks on the period label. */
   _currentPeriodClicked(): void {
     this._monthView = !this._monthView;
-    console.log(this.timepickerAttrs);
   }
 
   /** Handles user clicks on the previous button. */

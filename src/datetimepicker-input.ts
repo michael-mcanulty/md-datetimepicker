@@ -32,7 +32,6 @@ import {
   Validators
 } from '@angular/forms';
 import {Subscription} from 'rxjs/Subscription';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {MdInputContainer, DOWN_ARROW, MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
 import {DateAdapter} from './native-date-module/index';
 import {createMissingDateImplError} from './datetimepicker-errors';
@@ -82,6 +81,7 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
   isTouch():boolean{
     return ("ontouchstart" in document.documentElement)?true:false;
   }
+
   @Input() set matDatetimepicker(value: MdDatetimepicker<D>) {
     this.MdDatetimepicker = value;
   }
@@ -97,8 +97,30 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
     this.MdDatetimepickerFilter = filter;
   }
 
-  private _dateFormatting(isParse:boolean){
-    let _input = (this._timeViewAttrs.hideTime)?'dateInput':'datetimeInput';
+  /** The date to open the calendar to initially. */
+  @Input()
+  get date(): D {
+    // If an explicit date is set we start there, otherwise we start at whatever the currently
+    // selected value is.
+    return this._date;
+  }
+  set date(date: D) {
+    this._date = date;
+    this.value = date;
+  }
+  private _date: D;
+
+  /** Set as datepicker only; No timepicker*/
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
+
+  dateFormatting(isParse:boolean){
+    let _input = (this.hideTime)?'dateInput':'datetimeInput';
     if(this._dateFormats && isParse){
       return this._dateFormats.parse[_input];
     }else if(this._dateFormats && !isParse){
@@ -109,12 +131,12 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
   /** The value of the input. */
   @Input()
   get value(): D {
-    let parse_format = this._dateFormatting(true);
+    let parse_format = this.dateFormatting(true);
     return this._dateAdapter.parse(this._elementRef.nativeElement.value, parse_format);
   }
   set value(value: D) {
-    let parse_format = this._dateFormatting(true);
-    let display_format = this._dateFormatting(false);
+    let parse_format = this.dateFormatting(true);
+    let display_format = this.dateFormatting(false);
     let date = this._dateAdapter.parse(value, parse_format);
     let oldDate = this.value;
     this._renderer.setProperty(this._elementRef.nativeElement, 'value',
@@ -123,13 +145,13 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
       this._valueChange.emit(date);
     }
   }
-  @Input()
+
+  /** Enables touchUi by calling isTouch() method that looks for the presence of "ontouchstart" event on the document Element **/
   get touch(): boolean { return this._touch; }
   set touch(value: boolean) {
     this._touch = value;
   }
   private _touch: boolean;
-
 
   /** The minimum valid date. */
   @Input()
@@ -149,17 +171,8 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
   }
   private _max: D;
 
-  @Input()
-  get timeViewAttrs():TimepickerAttrs{
-    return this._timeViewAttrs;
-  }
-  set timeViewAttrs(value:TimepickerAttrs){
-    this._timeViewAttrs = value;
-  }
-  
   /** Emits when the value changes (either due to user input or programmatic change). */
   _valueChange = new EventEmitter<D>();
-  private _timeViewAttrs:TimepickerAttrs;
 
   _onTouched = () => {};
 
@@ -209,16 +222,6 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
   ngAfterContentInit() {
     if (this._datetimepicker) {
         this.touch = this.isTouch();
-        let _attrs = <TimepickerAttrs>{};
-        let hide = this._elementRef.nativeElement.getAttribute('hide-time');
-        if(hide === 'false'){
-           _attrs.hideTime = false;
-        }else{
-          _attrs.hideTime = Boolean(this._elementRef.nativeElement.getAttribute('hide-time'));
-        }
-        _attrs.defaultHour = parseInt(this._elementRef.nativeElement.getAttribute('hour')) || new Date().getHours();
-        _attrs.defaultMinute = parseInt(this._elementRef.nativeElement.getAttribute('minute')) || new Date().getMinutes();
-        this.timeViewAttrs = _attrs;
         this._datetimepickerSubscription = this._datetimepicker.selectedChanged.subscribe((selected: D) => {
           this.value = selected;
           this._cvaOnChange(selected);

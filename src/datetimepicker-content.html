@@ -1,6 +1,5 @@
 <md-calendar cdkTrapFocus
     [id]="datetimepicker.id"
-    [startAt]="datetimepicker.startAt"
     [startView]="datetimepicker.startView"
     [minDate]="datetimepicker._minDate"
     [maxDate]="datetimepicker._maxDate"
@@ -8,6 +7,6 @@
     [selected]="datetimepicker._selected"
     (selectedChange)="datetimepicker._selectAndClose($event)"
     (closeDialog)="datetimepicker.close()"
-    [timepickerAttrs]="datetimepicker.timepickerAttrs"
-    >
+    [hideTime]="datetimepicker.hideTime"
+    [date]="datetimepicker.date">
 </md-calendar>

@@ -49,7 +49,6 @@
   <md-month-view
     *ngSwitchCase="true"
     [activeDate]="_activeDate"
-    [timepickerAttrs]="timepickerAttrs"
     [selected]="selected"
     [dateFilter]="_dateFilterForViews"
     (selectedChange)="_dateSelected($event)">
@@ -59,15 +58,13 @@
     *ngSwitchDefault
     [activeDate]="_activeDate"
     [selected]="selected"
-    [timepickerAttrs]="timepickerAttrs"
     [dateFilter]="_dateFilterForViews"
     (selectedChange)="_monthSelected($event)">
   </md-year-view>
 
   <md-time-view 
-    *ngIf="!timepickerAttrs.hideTime"
+    *ngIf="!hideTime"
     [selected]="selected"
-    [timepickerAttrs]="timepickerAttrs"
     (selectedChange)="_timeSelected($event)">
   </md-time-view>
   

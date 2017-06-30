@@ -20,7 +20,6 @@ import {
 } from '@angular/core';
 import {MdCalendarCell} from './calendar-body';
 import {MdCalendar} from './calendar';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {DateAdapter} from './native-date-module/index';
 import {MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
@@ -43,19 +42,22 @@ export class MdMonthView<D> implements AfterContentInit {
    */
   @Input()
   get activeDate(): D { return this._activeDate; }
-  set activeDate(value: D) {
+  set activeDate(value: D){
     let oldActiveDate = this._activeDate;
     this._activeDate = value || this._dateAdapter.today();
     if (!this._hasSameMonthAndYear(oldActiveDate, this._activeDate)) {
       this._init();
     }
   }
+
   private _activeDate: D;
 
   /** The currently selected date. */
   @Input()
-  get selected(): D { return this._selected; }
-  set selected(value: D) {
+  get selected(): D {
+    return this._selected;
+  }
+  set selected(value: D){
     this._selected = value;
     this._selectedDate = this._getDateInCurrentMonth(this.selected);
   }
@@ -67,18 +69,6 @@ export class MdMonthView<D> implements AfterContentInit {
   /** Emits when a new date is selected. */
   @Output() selectedChange = new EventEmitter<D>();
 
-  /** bring in the attributes placed on the text input */
-
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    if(v){
-      this._timepickerAttrs = v;
-    }
-  }
-  private _timepickerAttrs: TimepickerAttrs;
   /** The label for this month (e.g. "January 2017"). */
   _monthLabel: string;
 
@@ -119,7 +109,7 @@ export class MdMonthView<D> implements AfterContentInit {
     });
     this._weekdays = weekdays.slice(firstDayOfWeek).concat(weekdays.slice(0, firstDayOfWeek));
 
-    this._activeDate = this._dateAdapter.today();
+    this._activeDate = this._calendar.date || this._dateAdapter.today();
   }
 
   ngAfterContentInit(): void {
@@ -129,8 +119,8 @@ export class MdMonthView<D> implements AfterContentInit {
   /** Handles when a new date is selected. */
   _dateSelected(date: number) {
     //let defaultHours = this.
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     this.selectedChange.emit(this._dateAdapter.createDate(
         this._dateAdapter.getYear(this.activeDate), this._dateAdapter.getMonth(this.activeDate),
         date, defaultHours, defaultMinutes)
@@ -139,9 +129,8 @@ export class MdMonthView<D> implements AfterContentInit {
 
   /** Initializes this month view. */
   private _init(){
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     this._selectedDate = this._getDateInCurrentMonth(this.selected);
     this._todayDate = this._getDateInCurrentMonth(this._dateAdapter.today());
     this._monthLabel =
@@ -161,8 +150,8 @@ export class MdMonthView<D> implements AfterContentInit {
   private _createWeekCells() {
     let daysInMonth = this._dateAdapter.getNumDaysInMonth(this.activeDate);
     let dateNames = this._dateAdapter.getDateNames();
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this.activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this.activeDate);
+    let defaultHours:number = this._dateAdapter.getHours(this.activeDate);
+    let defaultMinutes:number = this._dateAdapter.getMinutes(this.activeDate);
     this._weeks = [[]];
     for (let i = 0, cell = this._firstWeekOffset; i < daysInMonth; i++, cell++) {
       if (cell == DAYS_PER_WEEK) {

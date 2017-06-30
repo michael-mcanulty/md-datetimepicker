@@ -106,7 +106,9 @@ export class NativeDateAdapter extends DateAdapter<Date> {
   }
 
   today(): Date {
-    return new Date();
+    let date = new Date();
+    let now:Date = <Date>this.createDate(this.getYear(date), this.getMonth(date), this.getDate(date), this.getHours(date), this.getMinutes(date));
+    return now;
   }
 
   parse(value: any): Date | null {

@@ -21,7 +21,6 @@ import {
 } from '@angular/core';
 import {MdCalendar} from './calendar';
 import {createMissingDateImplError} from './datetimepicker-errors';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {DateAdapter} from './native-date-module/index';
 import {MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
 
@@ -31,7 +30,7 @@ import {MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
  */
 @Component({
   selector: 'md-time-view',
-  template: `<table style="width:100%" cellspacing="0"> <tr><th class="mat-calendar-table-header-divider" colspan="7" aria-hidden="true"></th></tr></table><div class="mat-time-container"> <div class="mat-time-button-wrapper"> <div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button" (click)="_increaseHoursClicked()" [attr.aria-label]="_increaseHoursButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-up-button" (click)="_increaseHoursClicked()" [attr.aria-label]="_increaseHoursButtonLabel"> </button> </div><div class="mat-time-display"> <input [value]="_getClockHrs(selected)" pattern="\d*" class="mat-time-input"/> </div><div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-down-button" (click)="_decreaseHoursClicked()" [attr.aria-label]="_decreaseHoursButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-down-button" (click)="_decreaseHoursClicked()" [attr.aria-label]="_decreaseHoursButtonLabel"> </button> </div></div><div class="mat-time-spacer-wrapper"> <div class="mat-button-spacer-wrapper"> </div><div class="mat-time-colon-wrapper"> <div class="mat-time-colon">:</div></div><div class="mat-button-spacer-wrapper"></div></div><div class="mat-time-button-wrapper time-minutes"> <div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button" (click)="_increaseMinutesClicked()" [attr.aria-label]="_increaseMinutesButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-up-button" (click)="_increaseMinutesClicked()" [attr.aria-label]="_increaseMinutesButtonLabel"> </button> </div><div class="mat-time-display"> <input [value]="_getClockMins(selected)" pattern="\d*" class="mat-time-input"/> </div><div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-down-button" (click)="_decreaseMinutesClicked()" [attr.aria-label]="_decreaseMinutesButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-down-button" (click)="_decreaseMinutesClicked()" [attr.aria-label]="_decreaseMinutesButtonLabel"> </button> </div></div><div class="mat-time-button-wrapper" *ngIf="_dateAdapter.is12Hour()"> <button class="mat-raised-button mat-time-ampm" (click)="_pmClicked()" [attr.aria-label]="_ampmButtonLabel">{{ampm}}</button> </div></div>`,
+  template: `<table style="width:100%" cellspacing="0"> <tr><th class="mat-calendar-table-header-divider" colspan="7" aria-hidden="true"></th></tr></table><div class="mat-time-container"> <div class="mat-time-button-wrapper" (swipeup)="_increaseHoursClicked()" (swipedown)="_decreaseHoursClicked()"> <div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button" (click)="_increaseHoursClicked()" [attr.aria-label]="_increaseHoursButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-up-button" (click)="_increaseHoursClicked()" [attr.aria-label]="_increaseHoursButtonLabel"> </button> </div><div class="mat-time-display"> <input [value]="_getClockHrs(selected)" pattern="\d*" class="mat-time-input"/> </div><div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-down-button" (click)="_decreaseHoursClicked()" [attr.aria-label]="_decreaseHoursButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-down-button" (click)="_decreaseHoursClicked()" [attr.aria-label]="_decreaseHoursButtonLabel"> </button> </div></div><div class="mat-time-spacer-wrapper"> <div class="mat-button-spacer-wrapper"> </div><div class="mat-time-colon-wrapper"> <div class="mat-time-colon">:</div></div><div class="mat-button-spacer-wrapper"></div></div><div class="mat-time-button-wrapper time-minutes" (swipeup)="_increaseMinutesClicked()" (swipedown)="_decreaseMinutesClicked()"> <div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-up-button" (click)="_increaseMinutesClicked()" [attr.aria-label]="_increaseMinutesButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-up-button" (click)="_increaseMinutesClicked()" [attr.aria-label]="_increaseMinutesButtonLabel"> </button> </div><div class="mat-time-display"> <input [value]="_getClockMins(selected)" pattern="\d*" class="mat-time-input"/> </div><div class="mat-time-button"> <button *ngIf="!_isCompatibilityMode" md-icon-button class="mat-calendar-down-button" (click)="_decreaseMinutesClicked()" [attr.aria-label]="_decreaseMinutesButtonLabel"> </button> <button *ngIf="_isCompatibilityMode" mat-icon-button class="mat-calendar-down-button" (click)="_decreaseMinutesClicked()" [attr.aria-label]="_decreaseMinutesButtonLabel"> </button> </div></div><div class="mat-time-button-wrapper" *ngIf="_dateAdapter.is12Hour()"> <button class="mat-raised-button mat-time-ampm" (click)="_pmClicked()" [attr.aria-label]="_ampmButtonLabel">{{ampm}}</button> </div></div>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -52,15 +51,6 @@ export class MdTimeView<D> implements AfterContentInit {
   set ampm(label:string){
     this._ampm = label;
   };
-  
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    this._timepickerAttrs = v;
-  }
-  private _timepickerAttrs: TimepickerAttrs;
 
   _getClockHrs():string{
     let time:string = this._dateAdapter.toLocaleTimeString(this._selected);
@@ -112,9 +102,17 @@ export class MdTimeView<D> implements AfterContentInit {
     this._selected = value || this._dateAdapter.today();
   }
 
+ /** Set as datepicker only; No timepicker*/
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
+
   ngAfterContentInit(){
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
+    this.hideTime = this._calendar.hideTime;
     this.pm = this._dateAdapter.isPm(this._selected);
     this.ampm = (this.pm)?"PM":"AM";
   }

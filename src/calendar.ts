@@ -36,7 +36,6 @@ import {
 }
 from '@angular/material';
 import {MdDatetimepickerIntl} from './datetimepicker-intl';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {DateAdapter} from './native-date-module/index';
 
@@ -56,10 +55,6 @@ import {DateAdapter} from './native-date-module/index';
 })
 export class MdCalendar<D> implements AfterContentInit {
 
-  @Output() pickerAttrs:EventEmitter<TimepickerAttrs> = new EventEmitter<TimepickerAttrs>();
-  /** A date representing the period (month or year) to start the calendar in. */
-  @Input() startAt: D;
-
   /** Whether the calendar should be started in month or year view. */
   @Input() startView: 'month' | 'year' = 'month';
 
@@ -74,18 +69,6 @@ export class MdCalendar<D> implements AfterContentInit {
 
   /** A function used to filter which dates are selectable. */
   @Input() dateFilter: (date: D) => boolean;
-
-  /** Show or hide the time view */
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    this._timepickerAttrs = v;
-    this.pickerAttrs.emit(v);
-  }
-  private _timepickerAttrs: TimepickerAttrs;
-
 
   /** Date filter for the month and year views. */
   _dateFilterForViews = (date: D) => {
@@ -105,8 +88,30 @@ export class MdCalendar<D> implements AfterContentInit {
   }
   private _clampedActiveDate: D;
 
+ /** Set as datepicker only; No timepicker*/
+  @Input()
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
+  
   /** Whether the calendar is in month view. */
   _monthView: boolean;
+
+ /** The date to open the calendar to initially. */
+  @Input()
+  get date(): D {
+    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
+    // selected value is.
+    return this._date;
+  }
+  set date(date: D) {
+    this._date = date;
+  }
+  private _date: D;
 
   /** The label for the current calendar view. */
   get _periodButtonText(): string {
@@ -171,13 +176,11 @@ export class MdCalendar<D> implements AfterContentInit {
 
   ngAfterContentInit() {
     let  today = new Date();
-    let defaultHours:number =  this.timepickerAttrs.defaultHour || this._dateAdapter.getHours(this._activeDate);
-    let defaultMinutes:number = this.timepickerAttrs.defaultMinute || this._dateAdapter.getMinutes(this._activeDate);
-    this._activeDate = this.startAt || this._dateAdapter.createDate(today.getFullYear(), today.getMonth(), today.getDate(), defaultHours, defaultMinutes );
+    this._activeDate = this.date || this._dateAdapter.today();
     this._focusActiveCell();
     this._monthView = this.startView != 'year';
     this._dateSelected(this._activeDate);
-     this.selected = this._activeDate;
+    this.selected = this._activeDate;
   }
 
   /** Handles month selection in the year view. */
@@ -189,7 +192,6 @@ export class MdCalendar<D> implements AfterContentInit {
   /** Handles user clicks on the period label. */
   _currentPeriodClicked(): void {
     this._monthView = !this._monthView;
-    console.log(this.timepickerAttrs);
   }
 
   /** Handles user clicks on the previous button. */

@@ -21,7 +21,6 @@ import {
 } from '@angular/core';
 import {MdCalendar} from './calendar';
 import {createMissingDateImplError} from './datetimepicker-errors';
-import {TimepickerAttrs} from './timepicker-attrs';
 import {DateAdapter} from './native-date-module/index';
 import {MD_DATE_FORMATS, MdDateFormats} from '@angular/material';
 
@@ -52,15 +51,6 @@ export class MdTimeView<D> implements AfterContentInit {
   set ampm(label:string){
     this._ampm = label;
   };
-  
-  @Input()
-  get timepickerAttrs():TimepickerAttrs {
-    return this._timepickerAttrs;
-  }
-  set timepickerAttrs(v : TimepickerAttrs) {
-    this._timepickerAttrs = v;
-  }
-  private _timepickerAttrs: TimepickerAttrs;
 
   _getClockHrs():string{
     let time:string = this._dateAdapter.toLocaleTimeString(this._selected);
@@ -112,9 +102,17 @@ export class MdTimeView<D> implements AfterContentInit {
     this._selected = value || this._dateAdapter.today();
   }
 
+ /** Set as datepicker only; No timepicker*/
+  get hideTime():boolean{
+    return this._hideTime;
+  }
+  set hideTime(value:boolean){
+    this._hideTime = value;
+  }
+  private _hideTime:boolean;
+
   ngAfterContentInit(){
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
-    this.timepickerAttrs =  this._calendar.timepickerAttrs;
+    this.hideTime = this._calendar.hideTime;
     this.pm = this._dateAdapter.isPm(this._selected);
     this.ampm = (this.pm)?"PM":"AM";
   }

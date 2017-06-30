@@ -3,10 +3,11 @@ A datetime picker for Angular Material2.
 
 
 <h1>Requirements</h1>
-- ```hammerjs```
-- ```@angular/material```
-- ```@angular/animations```
-- ```rxjs/Subscription```
+
+- hammerjs
+- angular/material
+- angular/animations
+- rxjs/Subscription
 
 
 <h1>Installation</h1>

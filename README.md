@@ -61,20 +61,16 @@ import 'hammerjs';
 
 The three following attributes on the <bold>input</bold> element only are optional; you can omit entirely.
 
-- Hide-time
+- [HideTime] --datepicker only
 
-- Default Hours
+- [min] --date
 
-- Default Minutes
-
-- min (date)
-
-- max (date)
+- [max] --date
 
 
 <h1>Datetimepicker Attributes</h1>
 
-- startAt - This is the date to show when the calendar opens.
+- [date]  --The input [value] and picker date when opened.
 
 <h1>Demo</h1>
-Here is a working <a href="http://components.mikemcanulty.com/">demo</a>
+Here is a <a href="http://components.mikemcanulty.com/">demo</a>

@@ -81,4 +81,8 @@ Here is a <a href="http://components.mikemcanulty.com/">demo</a>
 
 - michael.mcanulty88@gmail.com
 
-If you want something added on and you don't have time, let me know I will do it. I am in Portland, Oregon PST.
+If you want something added on and you don't have time, let me know I will try and squeeze it in.
+
+Michael
+michael.mcanulty88@gmail.com
+Portland, OR

@@ -71,7 +71,7 @@ The three following attributes on the HTML<bold>Input</bold>Element are optional
 
 <h1>Datetimepicker Attributes</h1>
 
-- [HideTime] --datepicker only
+- [hideTime] --datepicker only
 
 
 <h1>Demo</h1>

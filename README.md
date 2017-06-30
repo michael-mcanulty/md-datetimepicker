@@ -59,9 +59,9 @@ import 'hammerjs';
 
 <h1>Input Attributes</h1>
 
-The three following attributes on the <bold>input</bold> element only are optional; you can omit entirely.
+The three following attributes on the HTML<bold>Input</bold>Element are optional; you can omit entirely.
 
-- [HideTime] --datepicker only
+- [date]  --The input [value] and picker date when opened.
 
 - [min] --date
 
@@ -70,7 +70,8 @@ The three following attributes on the <bold>input</bold> element only are option
 
 <h1>Datetimepicker Attributes</h1>
 
-- [date]  --The input [value] and picker date when opened.
+- [HideTime] --datepicker only
+
 
 <h1>Demo</h1>
 Here is a <a href="http://components.mikemcanulty.com/">demo</a>

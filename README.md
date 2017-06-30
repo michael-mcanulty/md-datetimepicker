@@ -76,3 +76,9 @@ The three following attributes on the HTML<bold>Input</bold>Element are optional
 
 <h1>Demo</h1>
 Here is a <a href="http://components.mikemcanulty.com/">demo</a>
+
+<h1>Contact</h1>
+
+- michael.mcanulty88@gmail.com
+
+If you want something added on and you don't have time, let me know I will do it. I am in Portland, Oregon PST.

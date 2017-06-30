@@ -14,7 +14,7 @@ A datetime picker for Angular Material2.
 
 Download
 
-- Download the Typescript files from GitHub in the src folder. Create a folder in your app root called datetimepicker.
+- Download the entire <a href="https://github.com/michael-mcanulty/md-datetimepicker/tree/master/src">src folder</a>. Rename it to 'datetimepicker' and place it in your root 'app' folder.
 
 Or
 

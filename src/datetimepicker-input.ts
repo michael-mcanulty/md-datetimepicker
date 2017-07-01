@@ -104,9 +104,9 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
     // selected value is.
     return this._date;
   }
+
   set date(date: D) {
     this._date = date;
-    this.value = date;
   }
   private _date: D;
 
@@ -114,9 +114,11 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
   get hideTime():boolean{
     return this._hideTime;
   }
+
   set hideTime(value:boolean){
     this._hideTime = value;
   }
+
   private _hideTime:boolean;
 
   dateFormatting(isParse:boolean){
@@ -221,9 +223,13 @@ export class MdDatetimepickerInput<D> implements AfterContentInit, ControlValueA
 
   ngAfterContentInit() {
     if (this._datetimepicker) {
+      if (this.date && !this._dateAdapter.sameDate(this.value, this.date)) {
+        this.value = this.date;
+      }
         this.touch = this.isTouch();
         this._datetimepickerSubscription = this._datetimepicker.selectedChanged.subscribe((selected: D) => {
           this.value = selected;
+          this.date = selected;
           this._cvaOnChange(selected);
         });
     }

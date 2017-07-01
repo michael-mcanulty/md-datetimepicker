@@ -175,12 +175,11 @@ export class MdCalendar<D> implements AfterContentInit {
   }
 
   ngAfterContentInit() {
-    let  today = new Date();
+    let today = new Date();
     this._activeDate = this.date || this._dateAdapter.today();
     this._focusActiveCell();
     this._monthView = this.startView != 'year';
     this._dateSelected(this._activeDate);
-    this.selected = this._activeDate;
   }
 
   /** Handles month selection in the year view. */

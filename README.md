@@ -1,11 +1,15 @@
 # MdDatetimepicker
-A datetime picker for Angular Material2.
+The Material2 picker extended to include a timepicker and more. 
+
+This module is for for Angular Material2.
 
 
 <h1>Requirements</h1>
 
 - hammerjs
 - angular/material
+- angular/forms
+- angular/platform-browser
 - angular/animations
 - rxjs/Subscription
 

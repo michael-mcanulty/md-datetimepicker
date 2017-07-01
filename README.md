@@ -79,8 +79,8 @@ Here is a <a href="http://components.mikemcanulty.com/">demo</a>
 
 <h1>Contact</h1>
 
-michael.mcanulty88@gmail.com
-Portland, Oregon
+michael.mcanulty88@gmail.com<br>
+Portland, Oregon<br>
 
 If you find an error or would like something added on and don't have time to do so, please let me know and I will try and help.
 

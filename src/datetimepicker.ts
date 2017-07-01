@@ -173,6 +173,8 @@ export class MdDatetimepicker<D> implements OnDestroy {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
+
+
   }
 
   ngOnDestroy() {
@@ -186,9 +188,9 @@ export class MdDatetimepicker<D> implements OnDestroy {
   }
 
   /** Selects the given date and closes the currently open popup or dialog. */
-  _selectAndClose(date: D): void {
-    this._selected = date;
-    this.selectedChanged.emit(date);
+  _selectAndClose(v: D): void {
+    this._selected = v;
+    this.selectedChanged.emit(v);
     this.close();
   }
 
@@ -205,7 +207,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
 
     this._datetimepickerInput = input;
 
-    this._inputSubscription = this._datetimepickerInput._valueChange.subscribe((value: D) => {this._selected = value; });
+    this._inputSubscription = this._datetimepickerInput._valueChange.subscribe((value: D) => { this._selected = value; this.date = value; });
   }
 
   /** Open the calendar. */
@@ -220,7 +222,6 @@ export class MdDatetimepicker<D> implements OnDestroy {
       this._focusedElementBeforeOpen = this._document.activeElement;
     }
     this._datetimepickerInput.hideTime = this.hideTime;
-    this.date = this._datetimepickerInput.date;
     this.touchUi ? this._openAsDialog() : this._openAsPopup();
     this.opened = true;
   }

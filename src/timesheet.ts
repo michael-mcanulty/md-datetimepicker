@@ -85,6 +85,9 @@ export class MdTimesheet<D> implements AfterContentInit {
   /** Emits changes to [date] and [value]. These are reflected in the input */
   @Output() save = new EventEmitter<D>();
 
+  
+  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   /** The date of the month that today falls on. Null if today is in another month. */
   private _selected: D;
 
@@ -107,7 +110,7 @@ export class MdTimesheet<D> implements AfterContentInit {
   set ampm(label:string){
     this._ampm = label;
   };
-
+ 
   /* get hours */
   _getClockHrs():string{
     let time:string = this._dateAdapter.toLocaleTimeString(this._selected);
@@ -278,7 +281,6 @@ export class MdTimesheet<D> implements AfterContentInit {
     }
   }
 
-  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   _closeDialog(): void {
     this.closeDialog.emit(true);
@@ -294,4 +296,65 @@ export class MdTimesheet<D> implements AfterContentInit {
     this.save.emit( this._selected );
   }
 
+  /* adds a leading 0 to an HTMLInputElement is a single digit */
+  _inputChange(event:any){
+    let input:HTMLInputElement = event.target;
+    let ln:number = input.value.length;
+    let isHours:boolean = input.classList.contains('hrs-input');
+    let val:string = input.value;
+    let intVal:number = parseInt(val);
+    let hrsMin:number = (this._dateAdapter.is12Hour())?1:0;
+    let hrsMax:number = (this._dateAdapter.is12Hour())?12:23;
+    let minMin:number = 0;
+    let minMax:number = 59;
+    if(ln > 2){
+      let _inputVal:string = val.slice(ln-2, ln);
+      input.value = _inputVal;
+      val = _inputVal;
+      intVal = parseInt(val);
+      console.log(input.value.length);
+    }
+
+    if(val.length && intVal >= 0){
+      if(isHours){
+        if(intVal > hrsMax || intVal < hrsMin){
+            input.value = hrsMin.toString();
+            val = hrsMin.toString();
+            intVal = parseInt(val);
+         }
+        if( this._dateAdapter.getHours(this._selected) !== intVal){
+          console.log(input.value);
+          this._dateAdapter.setHours(this._selected, intVal);
+        }
+      }else{
+        if(intVal > minMax || intVal < minMin){
+            input.value = minMin.toString();
+            val = minMin.toString();
+            intVal = parseInt(val);
+         }
+        let isChanged:boolean;
+        if(input.value.length === 1){
+          isChanged = this._leadingZero(input);
+        }
+        if(isChanged || this._dateAdapter.getMinutes(this._selected) !== intVal){
+          console.log(input.value);
+          this._dateAdapter.setMinutes(this._selected, intVal);
+        }
+      }
+    }
+  }
+
+  /* adds a leading 0 to an HTMLInputElement is a single digit. Returns true if the new value is different tahn original value*/
+  _leadingZero(input:HTMLInputElement):boolean{
+    let ln:number = input.value.length;
+    let isHours:boolean = input.classList.contains('hrs-input');
+    console.log(input.classList.contains('hrs-input'));
+    let val:string = input.value;
+    let intVal:number = parseInt(val);
+    console.log(val);
+    if(ln === 1){
+      input.value = "0" + input.value;
+    }
+    return intVal=== parseInt(input.value);
+  }
 }

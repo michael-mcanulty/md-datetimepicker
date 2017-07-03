@@ -17,7 +17,7 @@
         </button>
       </div>
       <div class="mat-time-display">
-        <input [value]="_getClockHrs(selected)" pattern="\d*" class="mat-time-input" />
+      <input type="tel" min="0" max="24" step="1" [value]="_getClockHrs(selected)" class="mat-time-input hrs-input" (click)="$event.target.select()" (input)="_inputChange($event)" />
       </div>
       <div class="mat-time-button">
         <button md-button
@@ -50,7 +50,7 @@
         </button>
       </div>
       <div class="mat-time-display">
-        <input [value]="_getClockMins(selected)" pattern="\d*" class="mat-time-input" />
+      <input type="tel" (click)="$event.target.select()" (input)="_inputChange($event)"  min="0" max="59" step="1" [value]="_getClockMins(selected)" class="mat-time-input min-input" />
       </div>
       <div class="mat-time-button">
           <button md-button

@@ -27,5 +27,6 @@ export class MdDatetimepickerIntl extends MdDatepickerIntl{
   /** A label to 'increasing minutes' on time widgit (used by screen readers). */
   decreaseMinutesButtonLabel = "Decrease Minutes";
 
+  /** A label for AMPM if applicable*/
   ampmButtonLabel = "Toggle AM and PM";
 }

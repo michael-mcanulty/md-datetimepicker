@@ -29,6 +29,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {DateAdapter} from './native-date-module/index';
 import {createMissingDateImplError} from './datetimepicker-errors';
 import {MdCalendar} from './calendar';
+import {MdTimesheet} from './timesheet';
 import 'rxjs/add/operator/first';
 
 /** Used to generate a unique ID for each datetimepicker instance. */
@@ -55,10 +56,14 @@ let datetimepickerUid = 0;
 })
 export class MdDatetimepickerContent<D> implements AfterContentInit {
   datetimepicker: MdDatetimepicker<D>;
-  @ViewChild(MdCalendar) _calendar: MdCalendar<D>;
+  @ViewChild(MdCalendar) calendar: MdCalendar<D>;
+  @ViewChild(MdTimesheet) timesheet: MdTimesheet<D>;
+
 
   ngAfterContentInit() {
-    this._calendar._focusActiveCell();
+    if(this.calendar){
+      this.calendar._focusActiveCell();
+    }
   }
 
   /**
@@ -85,7 +90,27 @@ export class MdDatetimepickerContent<D> implements AfterContentInit {
 export class MdDatetimepicker<D> implements OnDestroy {
 
   /** The view that the calendar should start in. */
-  @Input() startView: 'month' | 'year' = 'month';
+  @Input() calView: 'month' | 'year' = 'month';
+
+  /** The view that is displayed in. This is either calendar or timesheet, but can be changed to add more */
+  @Input()
+  get pickerView():string{
+    return (this._pickerView)?this._pickerView:'calendar';
+  }
+  set pickerView(value:string){
+    this._pickerView = value;
+  }
+  private _pickerView:string;
+
+  /** Height of the calendar. This is passed to timesheet */
+  @Input()
+  get calHeight():string{
+    return this._calHeight;
+  }
+  setCalHeight(value:string){
+    this._calHeight = value;
+  }
+  private _calHeight:string;
 
   /**
    * Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather
@@ -173,8 +198,6 @@ export class MdDatetimepicker<D> implements OnDestroy {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');
     }
-
-
   }
 
   ngOnDestroy() {
@@ -187,6 +210,11 @@ export class MdDatetimepicker<D> implements OnDestroy {
     }
   }
 
+  /** Handles date selection in the month view. This closes the dialog */
+  _dateComplete(date:D): void {
+    this._selected = date;
+  }
+
   /** Selects the given date and closes the currently open popup or dialog. */
   _selectAndClose(v: D): void {
     this._selected = v;
@@ -194,7 +222,11 @@ export class MdDatetimepicker<D> implements OnDestroy {
     this.close();
   }
 
-
+  /** Selects the given date and closes the currently open popup or dialog. */
+  _dateSelected(v: D): void {
+    this._selected = v;
+    this.pickerView = "timesheet";
+  }
 
   /**
    * Register an input with this datetimepicker.
@@ -224,6 +256,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
     this._datetimepickerInput.hideTime = this.hideTime;
     this.touchUi ? this._openAsDialog() : this._openAsPopup();
     this.opened = true;
+    this.pickerView = "calendar";
   }
 
   /** Close the calendar. */
@@ -253,7 +286,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
   private _openAsDialog(): void {
     let config = new MdDialogConfig();
     config.viewContainerRef = this._viewContainerRef;
-
+    config.disableClose = true;
     this._dialogRef = this._dialog.open(MdDatetimepickerContent, config);
     this._dialogRef.afterClosed().subscribe(() => this.close());
     this._dialogRef.componentInstance.datetimepicker = this;
@@ -271,7 +304,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
 
     if (!this._popupRef.hasAttached()) {
       let componentRef: ComponentRef<MdDatetimepickerContent<D>> =
-          this._popupRef.attach(this._calendarPortal);
+      this._popupRef.attach(this._calendarPortal);
       componentRef.instance.datetimepicker = this;
 
       // Update the position once the calendar has rendered.

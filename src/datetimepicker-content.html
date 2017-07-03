@@ -1,12 +1,30 @@
 <md-calendar cdkTrapFocus
+    *ngIf="datetimepicker.pickerView==='calendar'"
     [id]="datetimepicker.id"
-    [startView]="datetimepicker.startView"
+    (calHeight)="datetimepicker.setCalHeight($event)"
+    [monthView]="datetimepicker.calView"
+    [pickerView]="datetimepicker.pickerView"
     [minDate]="datetimepicker._minDate"
     [maxDate]="datetimepicker._maxDate"
     [dateFilter]="datetimepicker._dateFilter"
     [selected]="datetimepicker._selected"
-    (selectedChange)="datetimepicker._selectAndClose($event)"
+    (selectedChange)="datetimepicker._dateSelected($event)"
     (closeDialog)="datetimepicker.close()"
     [hideTime]="datetimepicker.hideTime"
     [date]="datetimepicker.date">
 </md-calendar>
+<md-timesheet
+    *ngIf="datetimepicker.pickerView==='timesheet'"
+    [calHeight]="datetimepicker.calHeight"
+    [id]="datetimepicker.id"
+    [pickerView]="datetimepicker.pickerView"
+    [minDate]="datetimepicker._minDate"
+    [maxDate]="datetimepicker._maxDate"
+    [dateFilter]="datetimepicker._dateFilter"
+    [selected]="datetimepicker._selected"
+    (selectedChange)="datetimepicker._dateSelected($event)"
+    (save)="datetimepicker._selectAndClose($event)"
+    (closeDialog)="datetimepicker.close()"
+    [hideTime]="datetimepicker.hideTime"
+    [date]="datetimepicker.date">
+</md-timesheet>

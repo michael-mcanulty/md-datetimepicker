@@ -1,0 +1,76 @@
+<div class="mat-calendar-header mat-calendar-body-selected">
+  <div class="subheading">{{_dateArr[0]}}</div>
+  <div class="heading">{{_dateArr[1]}}</div>
+  <div *ngIf="_dateArr[2]" class="subheading">{{_dateArr[2]}}</div>
+</div>
+<div class="mat-calendar-content timesheet">
+  <div class="mat-time-container" style="flex-grow:1;" [style.height]="timeHeight">
+    <div class="mat-time-button-wrapper" (swipeup)="_increaseHoursClicked()" (swipedown)="_decreaseHoursClicked()">
+      <div class="mat-time-button">
+         <button md-button
+              (click)="_increaseHoursClicked()"
+              [attr.aria-label]="_increaseHoursButtonLabel">
+              <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 14l5-5 5 5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+      </div>
+      <div class="mat-time-display">
+        <input [value]="_getClockHrs(selected)" pattern="\d*" class="mat-time-input" />
+      </div>
+      <div class="mat-time-button">
+        <button md-button
+              (click)="_decreaseHoursClicked()"
+              [attr.aria-label]="_decreaseHoursButtonLabel">
+              <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10l5 5 5-5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+      </div>
+    </div>
+    <div class="mat-time-spacer-wrapper">
+      <div class="mat-button-spacer-wrapper">
+      </div>
+      <div class="mat-time-colon-wrapper">
+        <div class="mat-time-colon">:</div>
+      </div>
+      <div class="mat-button-spacer-wrapper"></div>
+    </div>
+    <div class="mat-time-button-wrapper time-minutes"  (swipeup)="_increaseMinutesClicked()" (swipedown)="_decreaseMinutesClicked()">
+      <div class="mat-time-button">
+        <button md-button
+              (click)="_increaseMinutesClicked()"
+              [attr.aria-label]="_increaseMinutesButtonLabel">
+           <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 14l5-5 5 5z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mat-time-display">
+        <input [value]="_getClockMins(selected)" pattern="\d*" class="mat-time-input" />
+      </div>
+      <div class="mat-time-button">
+          <button md-button
+             (click)="_decreaseMinutesClicked()"
+              [attr.aria-label]="_decreaseMinutesButtonLabel">
+           
+            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10l5 5 5-5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+      </div>
+    </div>
+    <div class="mat-time-button-wrapper" *ngIf="_dateAdapter.is12Hour()">
+      <button class="mat-raised-button mat-time-ampm" (click)="_pmClicked()"
+              [attr.aria-label]="_ampmButtonLabel">{{ampm}}</button>
+    </div>
+  </div>
+  <div class="control-footer">
+    <button md-button (click)="_closeDialog()">Cancel</button>
+    <button md-button color="primary" (click)="_save()">Save</button>
+  </div>
+</div>

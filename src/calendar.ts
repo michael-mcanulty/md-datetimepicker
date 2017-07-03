@@ -18,7 +18,7 @@ import {
   Optional,
   Output,
   ViewEncapsulation,
-  ViewChild
+  AfterViewInit
 } from '@angular/core';
 import {
   DOWN_ARROW,
@@ -56,7 +56,10 @@ import {DateAdapter} from './native-date-module/index';
 export class MdCalendar<D> implements AfterContentInit {
 
   /** Whether the calendar should be started in month or year view. */
-  @Input() startView: 'month' | 'year' = 'month';
+  @Input() monthView: 'month' | 'year' = 'month';
+
+  /** The view that the picker should start in on the first view. */
+  @Input() pickerView: 'timesheet' | 'calendar' = 'calendar';
 
   /** The currently selected date. */
   @Input() selected: D;
@@ -69,14 +72,18 @@ export class MdCalendar<D> implements AfterContentInit {
 
   /** A function used to filter which dates are selectable. */
   @Input() dateFilter: (date: D) => boolean;
-
-  /** Date filter for the month and year views. */
-  _dateFilterForViews = (date: D) => {
-    return !!date &&
-        (!this.dateFilter || this.dateFilter(date)) &&
-        (!this.minDate || this._dateAdapter.compareDate(date, this.minDate) >= 0) &&
-        (!this.maxDate || this._dateAdapter.compareDate(date, this.maxDate) <= 0);
+ 
+  /** The date to open the calendar to initially. */
+  @Input()
+  get date(): D {
+    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
+    // selected value is.
+    return this._date;
   }
+  set date(date: D) {
+    this._date = date;
+  }
+  private _date: D;
 
   /**
    * The current active date. This determines which time period is shown and which date is
@@ -88,7 +95,6 @@ export class MdCalendar<D> implements AfterContentInit {
   }
   private _clampedActiveDate: D;
 
- /** Set as datepicker only; No timepicker*/
   @Input()
   get hideTime():boolean{
     return this._hideTime;
@@ -98,20 +104,25 @@ export class MdCalendar<D> implements AfterContentInit {
   }
   private _hideTime:boolean;
   
+    /** Emits when the currently selected date changes. */
+  @Output() selectedChange = new EventEmitter<D>();
+
+  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
+  @Output() calHeight: EventEmitter<string> = new EventEmitter<string>();
+
+  _closeDialog(): void {
+    this.closeDialog.emit(true);
+  }
+
   /** Whether the calendar is in month view. */
   _monthView: boolean;
 
- /** The date to open the calendar to initially. */
-  @Input()
-  get date(): D {
-    // If an explicit startAt is set we start there, otherwise we start at whatever the currently
-    // selected value is.
-    return this._date;
-  }
-  set date(date: D) {
-    this._date = date;
-  }
-  private _date: D;
+  /** Whether the picker is in calendar view. */
+  _calView: boolean;
+
+  /** The total height of the calendar dialog/popup*/
+ _calHeight: string;
 
   /** The label for the current calendar view. */
   get _periodButtonText(): string {
@@ -178,8 +189,20 @@ export class MdCalendar<D> implements AfterContentInit {
     let today = new Date();
     this._activeDate = this.date || this._dateAdapter.today();
     this._focusActiveCell();
-    this._monthView = this.startView != 'year';
+    this._monthView = this.monthView != 'year';
+    this._calView = this.pickerView != 'timesheet';
     this._dateSelected(this._activeDate);
+    console.log(this._calView);
+  }
+
+  /** Handles date selection in the month view. */
+  _dateSelected(date: D): void {
+    this.calHeight.emit(this._elementRef.nativeElement.offsetHeight + "px");
+    this.pickerView = "timesheet";
+    this.selected = date;
+    if (!this._dateAdapter.sameDate(this.date, this.selected)) {
+      this.selectedChange.emit(date);
+    }
   }
 
   /** Handles month selection in the year view. */
@@ -205,6 +228,14 @@ export class MdCalendar<D> implements AfterContentInit {
     this._activeDate = this._monthView ?
         this._dateAdapter.addCalendarMonths(this._activeDate, 1) :
         this._dateAdapter.addCalendarYears(this._activeDate, 1);
+  }
+
+  /** Date filter for the month and year views. */
+  _dateFilterForViews = (date: D) => {
+    return !!date &&
+        (!this.dateFilter || this.dateFilter(date)) &&
+        (!this.minDate || this._dateAdapter.compareDate(date, this.minDate) >= 0) &&
+        (!this.maxDate || this._dateAdapter.compareDate(date, this.maxDate) <= 0);
   }
 
   /** Whether the previous period button is enabled. */
@@ -367,32 +398,5 @@ export class MdCalendar<D> implements AfterContentInit {
     let increment = this._dateAdapter.getMonth(date) <= 4 ? 7 :
         (this._dateAdapter.getMonth(date) >= 7 ? 5 : 12);
     return this._dateAdapter.addCalendarMonths(date, increment);
-  }
-
-  /** Emits when the currently selected date changes. */
-  @Output() selectedChange = new EventEmitter<D>();
-
-  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
-  
-  _closeDialog(): void {
-    this.closeDialog.emit(true);
-  }
-
-  /** Handles date selection in the month view. */
-  _dateSelected(date: D): void {
-    if (!this._dateAdapter.sameDate(date, this.selected)) {
-      this.selected = date;
-    }
-  }
-
-  _timeSelected(date: D): void {
-    this.selected = date;
-  }
-
-   /** Handles date selection in the month view. */
-  _dateComplete(): void {
-    if(this.selected){
-      this.selectedChange.emit(this.selected);
-    }
   }
 }

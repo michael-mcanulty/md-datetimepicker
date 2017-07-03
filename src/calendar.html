@@ -1,18 +1,14 @@
 <div class="mat-calendar-header">
   <div class="mat-calendar-controls">
-    <!--
-      TODO(mmalerba): Clean up duplicated compatibility mode code when we have a better way to do
-      this.
-    -->
 
     <!-- Check for compatibility mode and use correct prefix for md-button. -->
     <button *ngIf="!_isCompatibilityMode" md-button class="mat-calendar-period-button"
-            (click)="_currentPeriodClicked()"  [attr.aria-label]="_periodButtonLabel">
+            (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">
       {{_periodButtonText}}
       <div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div>
     </button>
     <button *ngIf="_isCompatibilityMode" mat-button class="mat-calendar-period-button"
-            (click)="_currentPeriodClicked()"  [attr.aria-label]="_periodButtonLabel">
+            (click)="_currentPeriodClicked()" [attr.aria-label]="_periodButtonLabel">
       {{_periodButtonText}}
       <div class="mat-calendar-arrow" [class.mat-calendar-invert]="!_monthView"></div>
     </button>
@@ -42,35 +38,23 @@
 </div>
 
 <div class="mat-calendar-content"
-    (keydown)="_handleCalendarBodyKeydown($event)"
-    (swipeleft)="_previousClicked()"
-    (swiperight)="_nextClicked()"
-    [ngSwitch]="_monthView" cdkMonitorSubtreeFocus>
-  <md-month-view
-    *ngSwitchCase="true"
-    [activeDate]="_activeDate"
-    [selected]="selected"
-    [dateFilter]="_dateFilterForViews"
-    (selectedChange)="_dateSelected($event)">
-  </md-month-view>
+      (keydown)="_handleCalendarBodyKeydown($event)"
+      (swipeleft)="_previousClicked()"
+      (swiperight)="_nextClicked()"
+      [ngSwitch]="_monthView" cdkMonitorSubtreeFocus>
+    <md-month-view
+      *ngSwitchCase="true"
+      [activeDate]="_activeDate"
+      [selected]="selected"
+      [dateFilter]="_dateFilterForViews"
+      (selectedChange)="_dateSelected($event)">
+    </md-month-view>
 
-  <md-year-view
-    *ngSwitchDefault
-    [activeDate]="_activeDate"
-    [selected]="selected"
-    [dateFilter]="_dateFilterForViews"
-    (selectedChange)="_monthSelected($event)">
-  </md-year-view>
-
-  <md-time-view 
-    *ngIf="!hideTime"
-    [selected]="selected"
-    (selectedChange)="_timeSelected($event)">
-  </md-time-view>
-  
+    <md-year-view
+      *ngSwitchDefault
+      [activeDate]="_activeDate"
+      [selected]="selected"
+      [dateFilter]="_dateFilterForViews"
+      (selectedChange)="_monthSelected($event)">
+    </md-year-view>
 </div>
-<div class="mat-calendar-footer">
-  <button md-button (click)="_closeDialog()">Cancel</button>
-  <button md-button [disabled]="!selected" (click)="_dateComplete()">Submit</button>
-</div>
-

@@ -8,7 +8,6 @@
 import { AfterContentInit, ElementRef, EventEmitter, NgZone } from '@angular/core';
 import { MdDateFormats } from '@angular/material';
 import { MdDatetimepickerIntl } from './datetimepicker-intl';
-import { TimepickerAttrs } from './timepicker-attrs';
 import { DateAdapter } from './native-date-module/index';
 /**
  * A calendar that is used as part of the datetimepicker.
@@ -21,11 +20,10 @@ export declare class MdCalendar<D> implements AfterContentInit {
     _isCompatibilityMode: boolean;
     private _dateAdapter;
     private _dateFormats;
-    pickerAttrs: EventEmitter<TimepickerAttrs>;
-    /** A date representing the period (month or year) to start the calendar in. */
-    startAt: D;
     /** Whether the calendar should be started in month or year view. */
-    startView: 'month' | 'year';
+    monthView: 'month' | 'year';
+    /** The view that the picker should start in on the first view. */
+    pickerView: 'timesheet' | 'calendar';
     /** The currently selected date. */
     selected: D;
     /** The minimum selectable date. */
@@ -34,19 +32,28 @@ export declare class MdCalendar<D> implements AfterContentInit {
     maxDate: D;
     /** A function used to filter which dates are selectable. */
     dateFilter: (date: D) => boolean;
-    /** Show or hide the time view */
-    timepickerAttrs: TimepickerAttrs;
-    private _timepickerAttrs;
-    /** Date filter for the month and year views. */
-    _dateFilterForViews: (date: D) => boolean;
+    /** The date to open the calendar to initially. */
+    date: D;
+    private _date;
     /**
      * The current active date. This determines which time period is shown and which date is
      * highlighted when using keyboard navigation.
      */
     _activeDate: D;
     private _clampedActiveDate;
+    hideTime: boolean;
+    private _hideTime;
+    /** Emits when the currently selected date changes. */
+    selectedChange: EventEmitter<D>;
+    closeDialog: EventEmitter<boolean>;
+    calHeight: EventEmitter<string>;
+    _closeDialog(): void;
     /** Whether the calendar is in month view. */
     _monthView: boolean;
+    /** Whether the picker is in calendar view. */
+    _calView: boolean;
+    /** The total height of the calendar dialog/popup*/
+    _calHeight: string;
     /** The label for the current calendar view. */
     readonly _periodButtonText: string;
     readonly _periodButtonLabel: string;
@@ -66,6 +73,8 @@ export declare class MdCalendar<D> implements AfterContentInit {
     readonly _ampmButtonLabel: string;
     constructor(_elementRef: ElementRef, _intl: MdDatetimepickerIntl, _ngZone: NgZone, _isCompatibilityMode: boolean, _dateAdapter: DateAdapter<D>, _dateFormats: MdDateFormats);
     ngAfterContentInit(): void;
+    /** Handles date selection in the month view. */
+    _dateSelected(date: D): void;
     /** Handles month selection in the year view. */
     _monthSelected(month: D): void;
     /** Handles user clicks on the period label. */
@@ -74,6 +83,8 @@ export declare class MdCalendar<D> implements AfterContentInit {
     _previousClicked(): void;
     /** Handles user clicks on the next button. */
     _nextClicked(): void;
+    /** Date filter for the month and year views. */
+    _dateFilterForViews: (date: D) => boolean;
     /** Whether the previous period button is enabled. */
     _previousEnabled(): boolean;
     /** Whether the next period button is enabled. */
@@ -98,13 +109,4 @@ export declare class MdCalendar<D> implements AfterContentInit {
      * calendar table.
      */
     private _nextMonthInSameCol(date);
-    /** Emits when the currently selected date changes. */
-    selectedChange: EventEmitter<D>;
-    closeDialog: EventEmitter<boolean>;
-    _closeDialog(): void;
-    /** Handles date selection in the month view. */
-    _dateSelected(date: D): void;
-    _timeSelected(date: D): void;
-    /** Handles date selection in the month view. */
-    _dateComplete(): void;
 }

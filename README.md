@@ -57,7 +57,7 @@ import 'hammerjs';
 ```
 <md-input-container>
     <input mdInput [MdDatetimepicker]="picker" [date]="now" placeholder="Choose a date">
-		    <button mdSuffix [mdDatetimepickerToggle]="picker"></button>
+		    <button mdSuffix [mdDatetimepickerToggle]="picker" [hideTime]="false"></button>
 </md-input-container>
 <md-datetimepicker #picker [hideTime]="false"></md-datetimepicker>
 ```
@@ -77,6 +77,11 @@ The three following attributes on the HTML<bold>Input</bold>Element are optional
 
 - [hideTime] --datepicker only
 
+<h1>Datetimepicker Toggle Button Attribute</h1>
+
+- [hideTime]  -- Changes icon from datetime to a date only icon
+
+- [color] -- {string} icon fill color
 
 <h1>Demo</h1>
 Here is a <a href="http://components.mikemcanulty.com/">demo</a>

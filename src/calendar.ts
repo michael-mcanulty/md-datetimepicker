@@ -191,18 +191,17 @@ export class MdCalendar<D> implements AfterContentInit {
     this._focusActiveCell();
     this._monthView = this.monthView != 'year';
     this._calView = this.pickerView != 'timesheet';
-    this._dateSelected(this._activeDate);
-    console.log(this._calView);
+
   }
 
   /** Handles date selection in the month view. */
   _dateSelected(date: D): void {
-    this.calHeight.emit(this._elementRef.nativeElement.offsetHeight + "px");
-    this.pickerView = "timesheet";
-    this.selected = date;
-    if (!this._dateAdapter.sameDate(this.date, this.selected)) {
+   if(date){
+      this.calHeight.emit(this._elementRef.nativeElement.offsetHeight + "px");
+      this.selected = date;
       this.selectedChange.emit(date);
-    }
+      this.pickerView = "timesheet";
+   }
   }
 
   /** Handles month selection in the year view. */

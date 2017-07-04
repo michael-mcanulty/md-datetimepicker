@@ -87,5 +87,5 @@ export declare class MdTimesheet<D> implements AfterContentInit {
     _timeSelected(): void;
     _save(): void;
     _inputChange(event: any): void;
-    _leadingZero(input: HTMLInputElement): boolean;
+    _leadingZero(input: HTMLInputElement): void;
 }

@@ -247,10 +247,3 @@ md-dialog-container{
 	font-size:28px;
 	font-family:'Roboto';
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
-}

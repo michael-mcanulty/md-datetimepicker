@@ -50,7 +50,7 @@
         </button>
       </div>
       <div class="mat-time-display">
-      <input type="tel" (click)="$event.target.select()" (input)="_inputChange($event)"  min="0" max="59" step="1" [value]="_getClockMins(selected)" class="mat-time-input min-input" />
+      <input type="tel" (click)="$event.target.select()" (input)="_inputChange($event)"  min="0" max="59" step="1" [value]="_getClockMins(selected)" (blur)="_leadingZero($event.target)" class="mat-time-input min-input" />
       </div>
       <div class="mat-time-button">
           <button md-button

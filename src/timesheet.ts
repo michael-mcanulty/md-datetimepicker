@@ -307,12 +307,13 @@ export class MdTimesheet<D> implements AfterContentInit {
     let hrsMax:number = (this._dateAdapter.is12Hour())?12:23;
     let minMin:number = 0;
     let minMax:number = 59;
+    input.setSelectionRange(0, 2);
     if(ln > 2){
       let _inputVal:string = val.slice(ln-2, ln);
       input.value = _inputVal;
       val = _inputVal;
       intVal = parseInt(val);
-      console.log(input.value.length);
+
     }
 
     if(val.length && intVal >= 0){
@@ -323,7 +324,6 @@ export class MdTimesheet<D> implements AfterContentInit {
             intVal = parseInt(val);
          }
         if( this._dateAdapter.getHours(this._selected) !== intVal){
-          console.log(input.value);
           this._dateAdapter.setHours(this._selected, intVal);
         }
       }else{
@@ -332,20 +332,12 @@ export class MdTimesheet<D> implements AfterContentInit {
             val = minMin.toString();
             intVal = parseInt(val);
          }
-        let isChanged:boolean;
-        if(input.value.length === 1){
-          isChanged = this._leadingZero(input);
-        }
-        if(isChanged || this._dateAdapter.getMinutes(this._selected) !== intVal){
-          console.log(input.value);
-          this._dateAdapter.setMinutes(this._selected, intVal);
-        }
       }
     }
   }
 
   /* adds a leading 0 to an HTMLInputElement is a single digit. Returns true if the new value is different tahn original value*/
-  _leadingZero(input:HTMLInputElement):boolean{
+  _leadingZero(input:HTMLInputElement){
     let ln:number = input.value.length;
     let isHours:boolean = input.classList.contains('hrs-input');
     console.log(input.classList.contains('hrs-input'));
@@ -355,6 +347,8 @@ export class MdTimesheet<D> implements AfterContentInit {
     if(ln === 1){
       input.value = "0" + input.value;
     }
-    return intVal=== parseInt(input.value);
+    if(this._dateAdapter.getMinutes(this._selected) !== intVal){
+      this._dateAdapter.setMinutes(this._selected, intVal || 0);
+    }
   }
 }

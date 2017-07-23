@@ -10,7 +10,6 @@ import { Overlay, MdDialog, Dir } from '@angular/material';
 import { MdDatetimepickerInput } from './datetimepicker-input';
 import { DateAdapter } from './native-date-module/index';
 import { MdCalendar } from './calendar';
-import { TimepickerAttrs } from './timepicker-attrs';
 import 'rxjs/add/operator/first';
 /**
  * Component used as the content for the datetimepicker dialog and popup. We use this instead of using
@@ -21,7 +20,7 @@ import 'rxjs/add/operator/first';
  */
 export declare class MdDatetimepickerContent<D> implements AfterContentInit {
     datetimepicker: MdDatetimepicker<D>;
-    _calendar: MdCalendar<D>;
+    calendar: MdCalendar<D>;
     ngAfterContentInit(): void;
     /**
      * Handles keydown event on datetimepicker content.
@@ -38,16 +37,28 @@ export declare class MdDatetimepicker<D> implements OnDestroy {
     private _dateAdapter;
     private _dir;
     private _document;
-    /** The date to open the calendar to initially. */
-    startAt: D;
-    private _startAt;
     /** The view that the calendar should start in. */
-    startView: 'month' | 'year';
+    calView: 'month' | 'year';
+    /** The view that is displayed in. This is either calendar or timesheet, but can be changed to add more */
+    pickerView: string;
+    private _pickerView;
+    /** Height of the calendar. This is passed to timesheet */
+    readonly calHeight: string;
+    setCalHeight(value: string): void;
+    private _calHeight;
     /**
      * Whether the calendar UI is in touch mode. In touch mode the calendar opens in a dialog rather
      * than a popup and elements have more padding to allow for bigger touch targets.
      */
+    /** Set as datepicker only; No timepicker*/
+    date: D;
+    private _date;
+    /** Set as datepicker only; No timepicker*/
+    hideTime: boolean;
+    private _hideTime;
+    /** Sets to dialog to popup. Dialog req on small screen */
     touchUi: boolean;
+    private _touchUi;
     /** Emits new selected date when selected date changes. */
     selectedChanged: EventEmitter<D>;
     /** Whether the calendar is open. */
@@ -61,8 +72,6 @@ export declare class MdDatetimepicker<D> implements OnDestroy {
     /** The maximum selectable date. */
     readonly _maxDate: D;
     readonly _dateFilter: (date: D | null) => boolean;
-    private _timepickerAttrs;
-    timepickerAttrs: TimepickerAttrs;
     /** A reference to the overlay when the calendar is opened as a popup. */
     private _popupRef;
     /** A reference to the dialog when the calendar is opened as a dialog. */
@@ -76,8 +85,12 @@ export declare class MdDatetimepicker<D> implements OnDestroy {
     private _inputSubscription;
     constructor(_dialog: MdDialog, _overlay: Overlay, _ngZone: NgZone, _viewContainerRef: ViewContainerRef, _dateAdapter: DateAdapter<D>, _dir: Dir, _document: any);
     ngOnDestroy(): void;
+    /** Handles date selection in the month view. This closes the dialog */
+    _dateComplete(date: D): void;
     /** Selects the given date and closes the currently open popup or dialog. */
-    _selectAndClose(date: D): void;
+    _selectAndClose(v: D): void;
+    /** Selects the given date and closes the currently open popup or dialog. */
+    _dateSelected(v: D): void;
     /**
      * Register an input with this datetimepicker.
      * @param input The datetimepicker input to register with this datetimepicker.

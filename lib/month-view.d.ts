@@ -8,7 +8,6 @@
 import { AfterContentInit, EventEmitter } from '@angular/core';
 import { MdCalendarCell } from './calendar-body';
 import { MdCalendar } from './calendar';
-import { TimepickerAttrs } from './timepicker-attrs';
 import { DateAdapter } from './native-date-module/index';
 import { MdDateFormats } from '@angular/material';
 /**
@@ -31,9 +30,6 @@ export declare class MdMonthView<D> implements AfterContentInit {
     dateFilter: (date: D) => boolean;
     /** Emits when a new date is selected. */
     selectedChange: EventEmitter<D>;
-    /** bring in the attributes placed on the text input */
-    timepickerAttrs: TimepickerAttrs;
-    private _timepickerAttrs;
     /** The label for this month (e.g. "January 2017"). */
     _monthLabel: string;
     /** Grid of calendar cells representing the dates of the month. */

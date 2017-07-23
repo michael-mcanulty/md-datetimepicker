@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../src/native-date-module/date-formats.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,OAAO,EAAC,cAAc,EAAC,MAAM,eAAe,CAAC;AAkB7C,MAAM,CAAC,IAAM,eAAe,GAAG,IAAI,cAAc,CAAgB,iBAAiB,CAAC,CAAC","file":"date-formats.js","sourceRoot":""}
+{"version":3,"sources":["../../src/inline/native-date-module/date-formats.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,OAAO,EAAC,cAAc,EAAC,MAAM,eAAe,CAAC;AAmB7C,MAAM,CAAC,IAAM,eAAe,GAAG,IAAI,cAAc,CAAgB,iBAAiB,CAAC,CAAC","file":"date-formats.js","sourceRoot":""}

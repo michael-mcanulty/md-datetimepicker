@@ -17,8 +17,8 @@ export declare class MdTimesheet<D> implements AfterContentInit {
     private _elementRef;
     private _intl;
     private _ngZone;
+    _dateAdapter: DateAdapter<D>;
     _isCompatibilityMode: boolean;
-    private _dateAdapter;
     private _dateFormats;
     /** The view that the picker should start in. */
     pickerView: 'timesheet' | 'calendar';
@@ -77,10 +77,10 @@ export declare class MdTimesheet<D> implements AfterContentInit {
     /** The label for the minutes increase button. */
     readonly _increaseMinutesButtonLabel: string;
     /** The label for the minutes increase button. */
-    readonly _idecreaseMinutesButtonLabel: string;
+    readonly _decreaseMinutesButtonLabel: string;
     /** The label for displaying AM or PM */
     readonly _ampmButtonLabel: string;
-    constructor(_elementRef: ElementRef, _intl: MdDatetimepickerIntl, _ngZone: NgZone, _isCompatibilityMode: boolean, _dateAdapter: DateAdapter<D>, _dateFormats: MdDateFormats);
+    constructor(_elementRef: ElementRef, _intl: MdDatetimepickerIntl, _ngZone: NgZone, _dateAdapter: DateAdapter<D>, _isCompatibilityMode: boolean, _dateFormats: MdDateFormats);
     ngAfterContentInit(): void;
     ngOnChanges(): void;
     _closeDialog(): void;

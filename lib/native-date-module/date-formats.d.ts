@@ -17,6 +17,7 @@ export declare type MdDateFormats = {
         monthYearLabel: any;
         dateA11yLabel: any;
         monthYearA11yLabel: any;
+        dateHeader: any;
     };
 };
 export declare const MD_DATE_FORMATS: InjectionToken<MdDateFormats>;

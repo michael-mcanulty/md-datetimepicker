@@ -8,7 +8,6 @@
 import { AfterContentInit, EventEmitter } from '@angular/core';
 import { MdCalendarCell } from './calendar-body';
 import { MdCalendar } from './calendar';
-import { TimepickerAttrs } from './timepicker-attrs';
 import { DateAdapter } from './native-date-module/index';
 import { MdDateFormats } from '@angular/material';
 /**
@@ -35,8 +34,6 @@ export declare class MdYearView<D> implements AfterContentInit {
     _yearLabel: string;
     /** The month in this year that today falls on. Null if today is in a different year. */
     _todayMonth: number;
-    timepickerAttrs: TimepickerAttrs;
-    private _timepickerAttrs;
     /**
      * The month in this year that the selected Date falls on.
      * Null if the selected Date is in a different year.

@@ -9,5 +9,6 @@ export declare class MdDatetimepickerIntl extends MdDatepickerIntl {
     increaseMinutesButtonLabel: string;
     /** A label to 'increasing minutes' on time widgit (used by screen readers). */
     decreaseMinutesButtonLabel: string;
+    /** A label for AMPM if applicable*/
     ampmButtonLabel: string;
 }

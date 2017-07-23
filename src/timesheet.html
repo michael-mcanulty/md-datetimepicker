@@ -5,9 +5,17 @@
 </div>
 <div class="mat-calendar-content timesheet">
   <div class="mat-time-container" style="flex-grow:1;" [style.height]="timeHeight">
-    <div class="mat-time-button-wrapper" (swipeup)="_increaseHoursClicked()" (swipedown)="_decreaseHoursClicked()">
+    <div class="mat-time-button-wrapper">
       <div class="mat-time-button">
-         <button md-button
+         <button *ngIf="_isCompatibilityMode" mat-button 
+              (click)="_increaseHoursClicked()"
+              [attr.aria-label]="_increaseHoursButtonLabel">
+              <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 14l5-5 5 5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+         <button *ngIf="!_isCompatibilityMode" md-button 
               (click)="_increaseHoursClicked()"
               [attr.aria-label]="_increaseHoursButtonLabel">
               <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -17,10 +25,18 @@
         </button>
       </div>
       <div class="mat-time-display">
-      <input type="tel" min="0" max="24" step="1" [value]="_getClockHrs(selected)" class="mat-time-input hrs-input" (click)="$event.target.select()" (input)="_inputChange($event)" />
+        <input type="tel" min="0" max="24" step="1" [value]="_getClockHrs()" class="mat-time-input hrs-input" (click)="$event.target.select()" (input)="_inputChange($event)" />
       </div>
       <div class="mat-time-button">
-        <button md-button
+        <button *ngIf="!_isCompatibilityMode" md-button 
+              (click)="_decreaseHoursClicked()"
+              [attr.aria-label]="_decreaseHoursButtonLabel">
+              <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10l5 5 5-5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+         <button *ngIf="_isCompatibilityMode" mat-button 
               (click)="_decreaseHoursClicked()"
               [attr.aria-label]="_decreaseHoursButtonLabel">
               <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +56,15 @@
     </div>
     <div class="mat-time-button-wrapper time-minutes"  (swipeup)="_increaseMinutesClicked()" (swipedown)="_decreaseMinutesClicked()">
       <div class="mat-time-button">
-        <button md-button
+        <button *ngIf="!_isCompatibilityMode" md-button 
+              (click)="_increaseMinutesClicked()"
+              [attr.aria-label]="_increaseMinutesButtonLabel">
+           <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 14l5-5 5 5z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </button>
+         <button *ngIf="_isCompatibilityMode" mat-button 
               (click)="_increaseMinutesClicked()"
               [attr.aria-label]="_increaseMinutesButtonLabel">
            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -50,10 +74,19 @@
         </button>
       </div>
       <div class="mat-time-display">
-      <input type="tel" (click)="$event.target.select()" (input)="_inputChange($event)"  min="0" max="59" step="1" [value]="_getClockMins(selected)" (blur)="_leadingZero($event.target)" class="mat-time-input min-input" />
+      <input type="tel" (click)="$event.target.select()" (input)="_inputChange($event)"  min="0" max="59" step="1" [value]="_getClockMins()" (blur)="_leadingZero($event.target)" class="mat-time-input min-input" />
       </div>
       <div class="mat-time-button">
-          <button md-button
+          <button *ngIf="!_isCompatibilityMode" md-button 
+             (click)="_decreaseMinutesClicked()"
+              [attr.aria-label]="_decreaseMinutesButtonLabel">
+           
+            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10l5 5 5-5z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+         <button *ngIf="_isCompatibilityMode" mat-button 
              (click)="_decreaseMinutesClicked()"
               [attr.aria-label]="_decreaseMinutesButtonLabel">
            

@@ -238,7 +238,7 @@ export class MdTimesheet<D> implements AfterContentInit {
   }
 
   /** The label for the minutes increase button. */
-  get _idecreaseMinutesButtonLabel(): string {
+  get _decreaseMinutesButtonLabel(): string {
     return this._intl.decreaseMinutesButtonLabel;
   }
 

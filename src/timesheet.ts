@@ -251,7 +251,7 @@ export class MdTimesheet<D> implements AfterContentInit {
               private _intl: MdDatetimepickerIntl,
               private _ngZone: NgZone,
               @Optional() @Inject(MATERIAL_COMPATIBILITY_MODE) public _isCompatibilityMode: boolean,
-              @Optional() private _dateAdapter: DateAdapter<D>,
+              @Optional() public _dateAdapter: DateAdapter<D>,
               @Optional() @Inject(MD_DATE_FORMATS) private _dateFormats: MdDateFormats) {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');

@@ -117,6 +117,7 @@ export class MdTimesheet<D> implements AfterContentInit {
     let timeArr = time.split(":");
     return timeArr[0];
   }
+
   /* get minutes */
   _getClockMins():string{
     let time:string = this._dateAdapter.toLocaleTimeString(this._selected);
@@ -125,30 +126,30 @@ export class MdTimesheet<D> implements AfterContentInit {
   }
 
   /* Decrease hours by one hour onclick */
-  _decreaseHoursClicked(){
+  _decreaseHoursClicked(): void {
     this._selected = this._dateAdapter.setHours(this._selected, this._dateAdapter.getHours(this._selected) - 1);
     this._timeSelected();
   }
 
   /* Increase hours by one hour onclick */
-  _increaseHoursClicked(){
+  _increaseHoursClicked(): void {
     this._selected = this._dateAdapter.setHours(this._selected, this._dateAdapter.getHours(this._selected) + 1);
     this._timeSelected();
   }
   /* Increase minutes by one minute onclick */
-  _increaseMinutesClicked(){
+  _increaseMinutesClicked(): void {
     this._selected = this._dateAdapter.setMinutes(this._selected, this._dateAdapter.getMinutes(this._selected) + 1);
     this._timeSelected();
   }
 
   /* Decrease minutes by one minute onclick */
-  _decreaseMinutesClicked(){
+  _decreaseMinutesClicked(): void {
     this._selected = this._dateAdapter.setMinutes(this._selected, this._dateAdapter.getMinutes(this._selected) - 1);
     this._timeSelected();
   }
 
   /* ampm toggle onclick */
-  _pmClicked(){
+  _pmClicked(): void {
     if(this.pm){
       this.ampm = "AM";
       this._selected = this._dateAdapter.setHours(this._selected, this._dateAdapter.getHours(this._selected) - 12);
@@ -250,8 +251,8 @@ export class MdTimesheet<D> implements AfterContentInit {
   constructor(private _elementRef: ElementRef,
               private _intl: MdDatetimepickerIntl,
               private _ngZone: NgZone,
-              @Optional() @Inject(MATERIAL_COMPATIBILITY_MODE) public _isCompatibilityMode: boolean,
               @Optional() public _dateAdapter: DateAdapter<D>,
+              @Optional() @Inject(MATERIAL_COMPATIBILITY_MODE) public _isCompatibilityMode: boolean,
               @Optional() @Inject(MD_DATE_FORMATS) private _dateFormats: MdDateFormats) {
     if (!this._dateAdapter) {
       throw createMissingDateImplError('DateAdapter');

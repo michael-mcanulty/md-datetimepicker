@@ -5,9 +5,9 @@
 </div>
 <div class="mat-calendar-content timesheet">
   <div class="mat-time-container" style="flex-grow:1;" [style.height]="timeHeight">
-    <div class="mat-time-button-wrapper">
+    <div class="mat-time-button-wrapper" (swipeup)="_increaseHoursClicked()" (swipedown)="_decreaseHoursClicked()">
       <div class="mat-time-button">
-         <button *ngIf="_isCompatibilityMode" mat-button 
+          <button *ngIf="_isCompatibilityMode" mat-button 
               (click)="_increaseHoursClicked()"
               [attr.aria-label]="_increaseHoursButtonLabel">
               <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">

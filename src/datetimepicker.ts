@@ -57,8 +57,6 @@ let datetimepickerUid = 0;
 export class MdDatetimepickerContent<D> implements AfterContentInit {
   datetimepicker: MdDatetimepicker<D>;
   @ViewChild(MdCalendar) calendar: MdCalendar<D>;
-  @ViewChild(MdTimesheet) timesheet: MdTimesheet<D>;
-
 
   ngAfterContentInit() {
     if(this.calendar){

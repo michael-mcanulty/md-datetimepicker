@@ -1,6 +1,6 @@
 {
   "name": "md-datetimepicker",
-  "version": "1.0.11",
+  "version": "2.1.1",
   "description": "A datetime picker for Angular Material2",
   "author": "Michael McAnulty",
   "main": "./dist/md-datetimepicker.build.js",

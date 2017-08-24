@@ -181,7 +181,7 @@ export class MdTimesheet<D> implements AfterContentInit {
   }
   /* The setter also sets timeHeight */
   set calHeight(value:string){
-    let headerHeight = 84;
+    let headerHeight = 96;
     let footerControls = 40;
     this._calHeight = value;
     this.timeHeight = parseInt(value) - headerHeight - footerControls + "px";

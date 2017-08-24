@@ -48,7 +48,7 @@ let datetimepickerUid = 0;
   styleUrls: ['datetimepicker-content.css'],
   host: {
     'class': 'mat-datepicker-content',
-    '[class.mat-datetimepicker-content-touch]': 'datetimepicker.touchUi',
+    '[class.mat-datepicker-content-touch]': 'datetimepicker.touchUi',
     '(keydown)': '_handleKeydown($event)',
   },
   encapsulation: ViewEncapsulation.None,
@@ -134,6 +134,16 @@ export class MdDatetimepicker<D> implements OnDestroy {
     this._hideTime = value;
   }
   private _hideTime:boolean;
+
+  /** Set as Timepicker only. No calendar for date*/
+  @Input()
+  get hideDate():boolean{
+    return this._hideTime;
+  }
+  set hideDate(value:boolean){
+    this._hideDate = value;
+  }
+  private _hideDate:boolean;
 
   /** Sets to dialog to popup. Dialog req on small screen */
   @Input()
@@ -234,9 +244,7 @@ export class MdDatetimepicker<D> implements OnDestroy {
     if (this._datetimepickerInput) {
       throw Error('An MdDatetimepicker can only be associated with a single input.');
     }
-
     this._datetimepickerInput = input;
-
     this._inputSubscription = this._datetimepickerInput._valueChange.subscribe((value: D) => { this._selected = value; this.date = value; });
   }
 
@@ -253,8 +261,8 @@ export class MdDatetimepicker<D> implements OnDestroy {
     }
     this._datetimepickerInput.hideTime = this.hideTime;
     this.touchUi ? this._openAsDialog() : this._openAsPopup();
+    this.pickerView = (this.hideDate)?"timesheet":"calendar";
     this.opened = true;
-    this.pickerView = "calendar";
   }
 
   /** Close the calendar. */

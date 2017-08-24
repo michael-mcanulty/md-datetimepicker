@@ -1,30 +1,51 @@
-.mat-datepicker-content {
-	box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-	display: block;
-}
-
-.mat-calendar {
-	width: 296px;
-}
-
-.mat-datepicker-content-touch {
-	display: block;
-	max-height: 80vh;
-	overflow: auto;
-	margin: -24px;
-}
-
-.mat-datepicker-content-touch .mat-calendar {
-	width: 64vmin;
-	height: 80vmin;
-	min-width: 250px;
-	min-height: 312px;
-	max-width: 750px;
-	max-height: 788px;
-}
 
 @media (min-width: 100VW) {
     .mat-datepicker-content-touch {
-		box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+		box-shadow: none;
+	}
+}
+@media (min-width: 0px) {
+   .mat-datepicker-content{
+		display: block;
+		box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+	}
+
+	.mat-calendar {
+		width: 250px;
+	}
+
+	.mat-datepicker-content-touch {
+		display: block;
+		max-height: 125vh;
+		overflow: auto;
+		box-shadow: none;
+		margin: -24px;
+	}
+
+	.mat-datepicker-content-touch .mat-calendar {
+		width: 64vmin;
+		height: 125vmin;
+		min-width: 250px;
+		min-height: 337px;
+		max-width: 250px;
+		max-height: 400px;
+	}
+
+}
+@media (min-width: 346px) {
+   .mat-calendar {
+		width: 296px;
+	}
+}
+@media (min-width: 500px) {
+   .mat-datepicker-content-touch .mat-calendar {
+		max-width: 300px;
+	    max-height: 400px;
+	}
+}
+@media (min-width: 700px) {
+   .mat-datepicker-content-touch .mat-calendar {
+		max-width: 500px;
+	    max-height: 600px;
 	}
 }

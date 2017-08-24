@@ -5,7 +5,7 @@ The Material2 picker extended to include a timepicker and more.
 <a href="http://components.mikemcanulty.com/">http://components.mikemcanulty.com</a>
 
 <h3>Screenshots</h3>
-<img src="https://github.com/michael-mcanulty/md-datetimepicker/blob/master/demo.jpg" width="600"/>
+<img src="https://github.com/michael-mcanulty/md-datetimepicker/blob/master/demo.png" width="600"/>
 
 <h1>Requirements</h1>
 

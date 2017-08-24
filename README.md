@@ -1,8 +1,11 @@
 # MdDatetimepicker
 The Material2 picker extended to include a timepicker and more. 
 
-This module is for for Angular Material2.
+<h3>Demo</h3>
+<a href="http://components.mikemcanulty.com/">http://components.mikemcanulty.com</a>
 
+<h3>Screenshots</h3>
+<img src="md-datetimepicker/demo.jpg"/>
 
 <h1>Requirements</h1>
 
